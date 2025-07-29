@@ -503,6 +503,17 @@
             </div>
         </div>
 
+        <!-- 問事內容 -->
+        <div class="section">
+            <h2>問事內容</h2>
+            <div class="form-row">
+                <div class="form-group" style="flex: 1;">
+                    <label>問事人之事：</label>
+                    <textarea id="question-content" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; resize: vertical;" placeholder="請描述問事的具體內容..."></textarea>
+                </div>
+            </div>
+        </div>
+
         <!-- 本卦與變卦 -->
         <div class="section">
             <h2>本卦與變卦</h2>
@@ -810,6 +821,30 @@
             }
         }
 
+        // 根據地支判斷五行
+        function getWuXingFromBranch(branch) {
+            const branchWuXing = {
+                '子': '水', '亥': '水',
+                '寅': '木', '卯': '木',
+                '巳': '火', '午': '火',
+                '申': '金', '酉': '金',
+                '辰': '土', '戌': '土', '丑': '土', '未': '土'
+            };
+            return branchWuXing[branch] || '';
+        }
+
+        // 根據五行生成旺相休囚死
+        function getWuXingStatus(monthWuXing) {
+            const statusMap = {
+                '木': '木旺 火相 水休 金囚 土死',
+                '火': '火旺 土相 木休 水囚 金死',
+                '土': '土旺 金相 火休 木囚 水死',
+                '金': '金旺 水相 土休 火囚 木死',
+                '水': '水旺 木相 金休 土囚 火死'
+            };
+            return statusMap[monthWuXing] || '';
+        }
+
         // 生成Prompt
         function generatePrompt() {
             // 收集六十甲子時間
@@ -818,11 +853,24 @@
             const dayJiazi = document.getElementById('day-jiazi').value;
             const hourJiazi = document.getElementById('hour-jiazi').value;
             
+            // 收集問事內容
+            const questionContent = document.getElementById('question-content').value;
+            
             // 收集本卦變卦信息
             const originalGua = document.getElementById('original-gua').value;
             const originalSpecial = document.getElementById('original-special').value;
             const changedGua = document.getElementById('changed-gua').value;
             const changedSpecial = document.getElementById('changed-special').value;
+            
+            // 根據月份地支判斷五行旺相休囚死
+            let wuxingStatus = '';
+            if (monthJiazi && monthJiazi.length >= 2) {
+                const monthBranch = monthJiazi.charAt(1); // 取地支部分
+                const monthWuXing = getWuXingFromBranch(monthBranch);
+                if (monthWuXing) {
+                    wuxingStatus = getWuXingStatus(monthWuXing);
+                }
+            }
             
             // 檢查是否有任何爻有變卦（不是「無變卦」）
             let hasAnyChangedYao = false;
@@ -836,7 +884,17 @@
             
             // 生成Prompt文本
             let prompt = `請幫我解這個六爻卦：\n\n`;
+            
+            if (questionContent) {
+                prompt += `問事內容：${questionContent}\n\n`;
+            }
+            
             prompt += `起卦時間：年${yearJiazi} 月${monthJiazi} 日${dayJiazi} 時${hourJiazi}\n`;
+            
+            if (wuxingStatus) {
+                prompt += `五行旺相休囚死：${wuxingStatus}\n`;
+            }
+            
             prompt += `本卦：${originalGua}${originalSpecial ? ' (' + originalSpecial + ')' : ''}\n`;
             prompt += `變卦：${changedGua}${changedSpecial ? ' (' + changedSpecial + ')' : ''}\n\n`;
             
