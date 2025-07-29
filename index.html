@@ -590,7 +590,6 @@
                 <div class="form-group">
                     <label>變卦：</label>
                     <select id="changed-gua">
-                        <option value="">選擇變卦</option>
                         <option value="乾為天">乾為天</option>
                         <option value="天地否">天地否</option>
                         <option value="天澤履">天澤履</option>
@@ -691,7 +690,7 @@
     </div>
 
     <script>
-        // 設定密碼（你可以改成你想要的密碼）
+        // 設定密碼
         const CORRECT_PASSWORD = "1234";
         
         // 檢查密碼
@@ -700,12 +699,10 @@
             const errorMessage = document.getElementById('error-message');
             
             if (inputPassword === CORRECT_PASSWORD) {
-                // 密碼正確，隱藏登入層，顯示主內容
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('main-container').style.display = 'block';
                 initializePage();
             } else {
-                // 密碼錯誤，顯示錯誤信息
                 errorMessage.style.display = 'block';
                 document.getElementById('password-input').value = '';
                 document.getElementById('password-input').focus();
@@ -727,11 +724,6 @@
         
         // 六獸選項
         const sixAnimals = ['青龍', '朱雀', '勾陳', '螣蛇', '白虎', '玄武'];
-
-        // 初始化頁面
-        function initializePage() {
-            generateYaoInputs();
-        }
 
         // 生成六爻輸入區域
         function generateYaoInputs() {
@@ -788,8 +780,8 @@
                         </div>
                         <div class="form-group">
                             <label>變卦(十二地支)：</label>
-                            <select id="changed-branch-${i}" class="changed-yao-field">
-                                <option value="">選擇地支</option>
+                            <select id="changed-branch-${i}">
+                                <option value="無變卦">無變卦</option>
                                 ${earthlyBranches.map(branch => `<option value="${branch}">${branch}</option>`).join('')}
                             </select>
                         </div>
@@ -798,8 +790,8 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>變卦六親：</label>
-                            <select id="changed-relative-${i}" class="changed-gua-field">
-                                <option value="">選擇六親</option>
+                            <select id="changed-relative-${i}">
+                                <option value="無">無</option>
                                 ${sixRelatives.map(rel => `<option value="${rel}">${rel}</option>`).join('')}
                             </select>
                         </div>
@@ -809,6 +801,7 @@
                         <label><input type="checkbox" id="shi-${i}"> 世爻</label>
                         <label><input type="checkbox" id="ying-${i}"> 應爻</label>
                         <label><input type="checkbox" id="body-${i}"> 卦身</label>
+                        <label><input type="checkbox" id="kongwang-${i}"> 空亡</label>
                         <label><input type="radio" name="yinyang-${i}" value="陽爻"> 陽爻</label>
                         <label><input type="radio" name="yinyang-${i}" value="陰爻"> 陰爻</label>
                     </div>
@@ -817,29 +810,13 @@
             }
         }
 
-        // 控制單一爻的變爻部分顯示/隱藏
-        function toggleSingleChangedYao(yaoIndex) {
-            const hasChanged = document.getElementById(`has-changed-${yaoIndex}`).value;
-            const changedSection = document.getElementById(`changed-section-${yaoIndex}`);
-            const changedBranch = document.getElementById(`changed-branch-${yaoIndex}`);
-            const changedRelative = document.getElementById(`changed-relative-${yaoIndex}`);
-            
-            if (hasChanged === 'yes') {
-                changedSection.style.display = 'block';
-            } else {
-                changedSection.style.display = 'none';
-                changedBranch.value = ''; // 清空值
-                changedRelative.value = ''; // 清空值
-            }
-        }
-
         // 生成Prompt
         function generatePrompt() {
-            // 收集四柱時間
-            const year = document.getElementById('year').value;
-            const month = document.getElementById('month').value;
-            const day = document.getElementById('day').value;
-            const hour = document.getElementById('hour').value;
+            // 收集六十甲子時間
+            const yearJiazi = document.getElementById('year-jiazi').value;
+            const monthJiazi = document.getElementById('month-jiazi').value;
+            const dayJiazi = document.getElementById('day-jiazi').value;
+            const hourJiazi = document.getElementById('hour-jiazi').value;
             
             // 收集本卦變卦信息
             const originalGua = document.getElementById('original-gua').value;
@@ -847,15 +824,30 @@
             const changedGua = document.getElementById('changed-gua').value;
             const changedSpecial = document.getElementById('changed-special').value;
             
+            // 檢查是否有任何爻有變卦（不是「無變卦」）
+            let hasAnyChangedYao = false;
+            for (let i = 0; i < 6; i++) {
+                const changedBranch = document.getElementById(`changed-branch-${i}`).value;
+                if (changedBranch && changedBranch !== '無變卦') {
+                    hasAnyChangedYao = true;
+                    break;
+                }
+            }
+            
             // 生成Prompt文本
             let prompt = `請幫我解這個六爻卦：\n\n`;
-            prompt += `起卦時間：${year}年${month}月${day}日 ${hour}\n`;
+            prompt += `起卦時間：年${yearJiazi} 月${monthJiazi} 日${dayJiazi} 時${hourJiazi}\n`;
             prompt += `本卦：${originalGua}${originalSpecial ? ' (' + originalSpecial + ')' : ''}\n`;
             prompt += `變卦：${changedGua}${changedSpecial ? ' (' + changedSpecial + ')' : ''}\n\n`;
             
             prompt += `六爻詳細資料：\n`;
-            prompt += `| 爻位 | 伏神 | 伏神六親 | 六獸 | 本卦六親 | 裝卦 | 特殊 | 陰陽 | 變卦 | 變卦六親 |\n`;
-            prompt += `|------|------|----------|------|----------|------|------|------|------|----------|\n`;
+            if (hasAnyChangedYao) {
+                prompt += `| 爻位 | 伏神 | 伏神六親 | 六獸 | 本卦六親 | 裝卦 | 特殊 | 陰陽 | 變卦 | 變卦六親 |\n`;
+                prompt += `|------|------|----------|------|----------|------|------|------|------|----------|\n`;
+            } else {
+                prompt += `| 爻位 | 伏神 | 伏神六親 | 六獸 | 本卦六親 | 裝卦 | 特殊 | 陰陽 |\n`;
+                prompt += `|------|------|----------|------|----------|------|------|------|\n`;
+            }
             
             const yaoNames = ['上爻', '五爻', '四爻', '三爻', '二爻', '初爻'];
             
@@ -872,20 +864,14 @@
                 const shi = document.getElementById(`shi-${i}`).checked ? '世' : '';
                 const ying = document.getElementById(`ying-${i}`).checked ? '應' : '';
                 const body = document.getElementById(`body-${i}`).checked ? '身' : '';
-                const special = [shi, ying, body].filter(x => x).join('/') || '無';
+                const kongwang = document.getElementById(`kongwang-${i}`).checked ? '空' : '';
+                const special = [shi, ying, body, kongwang].filter(x => x).join('/') || '無';
                 
                 // 收集陰陽
                 const yinyang = document.querySelector(`input[name="yinyang-${i}"]:checked`)?.value || '';
                 
-                // 檢查這一爻是否有變卦
-                const hasThisChanged = document.getElementById(`has-changed-${i}`).value === 'yes';
-                
                 if (hasAnyChangedYao) {
-                    if (hasThisChanged) {
-                        prompt += `| ${yaoNames[5-i]} | ${fushen} | ${fushenRelative} | ${animal} | ${originalRelative} | ${originalBranch} | ${special} | ${yinyang} | ${changedBranch} | ${changedRelative} |\n`;
-                    } else {
-                        prompt += `| ${yaoNames[5-i]} | ${fushen} | ${fushenRelative} | ${animal} | ${originalRelative} | ${originalBranch} | ${special} | ${yinyang} | 無變 | 無變 |\n`;
-                    }
+                    prompt += `| ${yaoNames[5-i]} | ${fushen} | ${fushenRelative} | ${animal} | ${originalRelative} | ${originalBranch} | ${special} | ${yinyang} | ${changedBranch} | ${changedRelative} |\n`;
                 } else {
                     prompt += `| ${yaoNames[5-i]} | ${fushen} | ${fushenRelative} | ${animal} | ${originalRelative} | ${originalBranch} | ${special} | ${yinyang} |\n`;
                 }
@@ -909,9 +895,13 @@
             alert('已複製到剪貼板！');
         }
 
-        // 頁面載入時不需要自動初始化，等密碼驗證後再初始化
+        // 初始化頁面
+        function initializePage() {
+            generateYaoInputs();
+        }
+
+        // 頁面載入時聚焦密碼輸入框
         window.onload = function() {
-            // 聚焦密碼輸入框
             document.getElementById('password-input').focus();
         };
     </script>
