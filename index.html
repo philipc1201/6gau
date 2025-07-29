@@ -156,10 +156,80 @@
         .btn-copy:hover {
             background-color: #218838;
         }
+        
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            text-align: center;
+            min-width: 300px;
+        }
+        
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        .login-btn {
+            background-color: #007cba;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            background-color: #005a8a;
+        }
+        
+        .error-message {
+            color: #d32f2f;
+            margin-top: 10px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- 登入遮罩層 -->
+    <div class="login-overlay" id="login-overlay">
+        <div class="login-box">
+            <h2>六爻解卦工具</h2>
+            <p>請輸入密碼進入系統</p>
+            <input type="password" id="password-input" placeholder="請輸入密碼" onkeypress="handlePasswordEnter(event)">
+            <button class="login-btn" onclick="checkPassword()">進入系統</button>
+            <div class="error-message" id="error-message" style="display: none;">密碼錯誤，請重試</div>
+        </div>
+    </div>
+
+    <div class="container" id="main-container" style="display: none;">
         <h1>六爻解卦工具</h1>
         
         <!-- 四柱時間 -->
@@ -310,6 +380,34 @@
     </div>
 
     <script>
+        // 設定密碼（你可以改成你想要的密碼）
+        const CORRECT_PASSWORD = "1234";
+        
+        // 檢查密碼
+        function checkPassword() {
+            const inputPassword = document.getElementById('password-input').value;
+            const errorMessage = document.getElementById('error-message');
+            
+            if (inputPassword === CORRECT_PASSWORD) {
+                // 密碼正確，隱藏登入層，顯示主內容
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('main-container').style.display = 'block';
+                initializePage();
+            } else {
+                // 密碼錯誤，顯示錯誤信息
+                errorMessage.style.display = 'block';
+                document.getElementById('password-input').value = '';
+                document.getElementById('password-input').focus();
+            }
+        }
+        
+        // 處理Enter鍵
+        function handlePasswordEnter(event) {
+            if (event.key === 'Enter') {
+                checkPassword();
+            }
+        }
+        
         // 十二地支選項
         const earthlyBranches = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
         
@@ -322,6 +420,7 @@
         // 初始化頁面
         function initializePage() {
             generateYaoInputs();
+            toggleChangedGua(); // 初始化變卦顯示狀態
         }
 
         // 生成六爻輸入區域
@@ -379,7 +478,7 @@
                         </div>
                         <div class="form-group">
                             <label>變卦(十二地支)：</label>
-                            <select id="changed-branch-${i}">
+                            <select id="changed-branch-${i}" class="changed-gua-field">
                                 <option value="">選擇地支</option>
                                 ${earthlyBranches.map(branch => `<option value="${branch}">${branch}</option>`).join('')}
                             </select>
@@ -389,7 +488,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>變卦六親：</label>
-                            <select id="changed-relative-${i}">
+                            <select id="changed-relative-${i}" class="changed-gua-field">
                                 <option value="">選擇六親</option>
                                 ${sixRelatives.map(rel => `<option value="${rel}">${rel}</option>`).join('')}
                             </select>
@@ -405,6 +504,26 @@
                     </div>
                 `;
                 container.appendChild(yaoDiv);
+            }
+        }
+
+        // 控制變卦部分的顯示/隱藏
+        function toggleChangedGua() {
+            const hasChangedGua = document.getElementById('has-changed-gua').value;
+            const changedGuaSection = document.getElementById('changed-gua-section');
+            const changedGuaFields = document.querySelectorAll('.changed-gua-field');
+            
+            if (hasChangedGua === 'yes') {
+                changedGuaSection.style.display = 'block';
+                changedGuaFields.forEach(field => {
+                    field.closest('.form-group').style.display = 'flex';
+                });
+            } else {
+                changedGuaSection.style.display = 'none';
+                changedGuaFields.forEach(field => {
+                    field.closest('.form-group').style.display = 'none';
+                    field.value = ''; // 清空值
+                });
             }
         }
 
@@ -452,7 +571,11 @@
                 // 收集陰陽
                 const yinyang = document.querySelector(`input[name="yinyang-${i}"]:checked`)?.value || '';
                 
-                prompt += `| ${yaoNames[5-i]} | ${fushen} | ${fushenRelative} | ${animal} | ${originalRelative} | ${originalBranch} | ${special} | ${yinyang} | ${changedBranch} | ${changedRelative} |\n`;
+                if (hasChangedGua === 'yes') {
+                    prompt += `| ${yaoNames[5-i]} | ${fushen} | ${fushenRelative} | ${animal} | ${originalRelative} | ${originalBranch} | ${special} | ${yinyang} | ${changedBranch} | ${changedRelative} |\n`;
+                } else {
+                    prompt += `| ${yaoNames[5-i]} | ${fushen} | ${fushenRelative} | ${animal} | ${originalRelative} | ${originalBranch} | ${special} | ${yinyang} |\n`;
+                }
             }
             
             prompt += `\n請根據以上信息進行詳細解卦分析。`;
@@ -473,8 +596,11 @@
             alert('已複製到剪貼板！');
         }
 
-        // 頁面載入時初始化
-        window.onload = initializePage;
+        // 頁面載入時不需要自動初始化，等密碼驗證後再初始化
+        window.onload = function() {
+            // 聚焦密碼輸入框
+            document.getElementById('password-input').focus();
+        };
     </script>
 </body>
 </html>
