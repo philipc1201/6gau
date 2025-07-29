@@ -232,52 +232,272 @@
     <div class="container" id="main-container" style="display: none;">
         <h1>六爻解卦工具</h1>
         
-        <!-- 四柱時間 -->
+        <!-- 六十甲子時間 -->
         <div class="section">
-            <h2>四柱時間</h2>
+            <h2>六十甲子時間</h2>
             <div class="form-row">
                 <div class="form-group">
-                    <label>年份：</label>
-                    <input type="number" id="year" placeholder="2024">
-                </div>
-                <div class="form-group">
-                    <label>月份：</label>
-                    <select id="month">
-                        <option value="">選擇月份</option>
-                        <option value="1">1月</option>
-                        <option value="2">2月</option>
-                        <option value="3">3月</option>
-                        <option value="4">4月</option>
-                        <option value="5">5月</option>
-                        <option value="6">6月</option>
-                        <option value="7">7月</option>
-                        <option value="8">8月</option>
-                        <option value="9">9月</option>
-                        <option value="10">10月</option>
-                        <option value="11">11月</option>
-                        <option value="12">12月</option>
+                    <label>年：</label>
+                    <select id="year-jiazi">
+                        <option value="">選擇年</option>
+                        <option value="甲子">甲子</option>
+                        <option value="乙丑">乙丑</option>
+                        <option value="丙寅">丙寅</option>
+                        <option value="丁卯">丁卯</option>
+                        <option value="戊辰">戊辰</option>
+                        <option value="己巳">己巳</option>
+                        <option value="庚午">庚午</option>
+                        <option value="辛未">辛未</option>
+                        <option value="壬申">壬申</option>
+                        <option value="癸酉">癸酉</option>
+                        <option value="甲戌">甲戌</option>
+                        <option value="乙亥">乙亥</option>
+                        <option value="丙子">丙子</option>
+                        <option value="丁丑">丁丑</option>
+                        <option value="戊寅">戊寅</option>
+                        <option value="己卯">己卯</option>
+                        <option value="庚辰">庚辰</option>
+                        <option value="辛巳">辛巳</option>
+                        <option value="壬午">壬午</option>
+                        <option value="癸未">癸未</option>
+                        <option value="甲申">甲申</option>
+                        <option value="乙酉">乙酉</option>
+                        <option value="丙戌">丙戌</option>
+                        <option value="丁亥">丁亥</option>
+                        <option value="戊子">戊子</option>
+                        <option value="己丑">己丑</option>
+                        <option value="庚寅">庚寅</option>
+                        <option value="辛卯">辛卯</option>
+                        <option value="壬辰">壬辰</option>
+                        <option value="癸巳">癸巳</option>
+                        <option value="甲午">甲午</option>
+                        <option value="乙未">乙未</option>
+                        <option value="丙申">丙申</option>
+                        <option value="丁酉">丁酉</option>
+                        <option value="戊戌">戊戌</option>
+                        <option value="己亥">己亥</option>
+                        <option value="庚子">庚子</option>
+                        <option value="辛丑">辛丑</option>
+                        <option value="壬寅">壬寅</option>
+                        <option value="癸卯">癸卯</option>
+                        <option value="甲辰">甲辰</option>
+                        <option value="乙巳">乙巳</option>
+                        <option value="丙午">丙午</option>
+                        <option value="丁未">丁未</option>
+                        <option value="戊申">戊申</option>
+                        <option value="己酉">己酉</option>
+                        <option value="庚戌">庚戌</option>
+                        <option value="辛亥">辛亥</option>
+                        <option value="壬子">壬子</option>
+                        <option value="癸丑">癸丑</option>
+                        <option value="甲寅">甲寅</option>
+                        <option value="乙卯">乙卯</option>
+                        <option value="丙辰">丙辰</option>
+                        <option value="丁巳">丁巳</option>
+                        <option value="戊午">戊午</option>
+                        <option value="己未">己未</option>
+                        <option value="庚申">庚申</option>
+                        <option value="辛酉">辛酉</option>
+                        <option value="壬戌">壬戌</option>
+                        <option value="癸亥">癸亥</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>日期：</label>
-                    <input type="number" id="day" min="1" max="31" placeholder="15">
+                    <label>月：</label>
+                    <select id="month-jiazi">
+                        <option value="">選擇月</option>
+                        <option value="甲子">甲子</option>
+                        <option value="乙丑">乙丑</option>
+                        <option value="丙寅">丙寅</option>
+                        <option value="丁卯">丁卯</option>
+                        <option value="戊辰">戊辰</option>
+                        <option value="己巳">己巳</option>
+                        <option value="庚午">庚午</option>
+                        <option value="辛未">辛未</option>
+                        <option value="壬申">壬申</option>
+                        <option value="癸酉">癸酉</option>
+                        <option value="甲戌">甲戌</option>
+                        <option value="乙亥">乙亥</option>
+                        <option value="丙子">丙子</option>
+                        <option value="丁丑">丁丑</option>
+                        <option value="戊寅">戊寅</option>
+                        <option value="己卯">己卯</option>
+                        <option value="庚辰">庚辰</option>
+                        <option value="辛巳">辛巳</option>
+                        <option value="壬午">壬午</option>
+                        <option value="癸未">癸未</option>
+                        <option value="甲申">甲申</option>
+                        <option value="乙酉">乙酉</option>
+                        <option value="丙戌">丙戌</option>
+                        <option value="丁亥">丁亥</option>
+                        <option value="戊子">戊子</option>
+                        <option value="己丑">己丑</option>
+                        <option value="庚寅">庚寅</option>
+                        <option value="辛卯">辛卯</option>
+                        <option value="壬辰">壬辰</option>
+                        <option value="癸巳">癸巳</option>
+                        <option value="甲午">甲午</option>
+                        <option value="乙未">乙未</option>
+                        <option value="丙申">丙申</option>
+                        <option value="丁酉">丁酉</option>
+                        <option value="戊戌">戊戌</option>
+                        <option value="己亥">己亥</option>
+                        <option value="庚子">庚子</option>
+                        <option value="辛丑">辛丑</option>
+                        <option value="壬寅">壬寅</option>
+                        <option value="癸卯">癸卯</option>
+                        <option value="甲辰">甲辰</option>
+                        <option value="乙巳">乙巳</option>
+                        <option value="丙午">丙午</option>
+                        <option value="丁未">丁未</option>
+                        <option value="戊申">戊申</option>
+                        <option value="己酉">己酉</option>
+                        <option value="庚戌">庚戌</option>
+                        <option value="辛亥">辛亥</option>
+                        <option value="壬子">壬子</option>
+                        <option value="癸丑">癸丑</option>
+                        <option value="甲寅">甲寅</option>
+                        <option value="乙卯">乙卯</option>
+                        <option value="丙辰">丙辰</option>
+                        <option value="丁巳">丁巳</option>
+                        <option value="戊午">戊午</option>
+                        <option value="己未">己未</option>
+                        <option value="庚申">庚申</option>
+                        <option value="辛酉">辛酉</option>
+                        <option value="壬戌">壬戌</option>
+                        <option value="癸亥">癸亥</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label>時辰：</label>
-                    <select id="hour">
-                        <option value="">選擇時辰</option>
-                        <option value="子時">子時 (23:00-01:00)</option>
-                        <option value="丑時">丑時 (01:00-03:00)</option>
-                        <option value="寅時">寅時 (03:00-05:00)</option>
-                        <option value="卯時">卯時 (05:00-07:00)</option>
-                        <option value="辰時">辰時 (07:00-09:00)</option>
-                        <option value="巳時">巳時 (09:00-11:00)</option>
-                        <option value="午時">午時 (11:00-13:00)</option>
-                        <option value="未時">未時 (13:00-15:00)</option>
-                        <option value="申時">申時 (15:00-17:00)</option>
-                        <option value="酉時">酉時 (17:00-19:00)</option>
-                        <option value="戌時">戌時 (19:00-21:00)</option>
-                        <option value="亥時">亥時 (21:00-23:00)</option>
+                    <label>日：</label>
+                    <select id="day-jiazi">
+                        <option value="">選擇日</option>
+                        <option value="甲子">甲子</option>
+                        <option value="乙丑">乙丑</option>
+                        <option value="丙寅">丙寅</option>
+                        <option value="丁卯">丁卯</option>
+                        <option value="戊辰">戊辰</option>
+                        <option value="己巳">己巳</option>
+                        <option value="庚午">庚午</option>
+                        <option value="辛未">辛未</option>
+                        <option value="壬申">壬申</option>
+                        <option value="癸酉">癸酉</option>
+                        <option value="甲戌">甲戌</option>
+                        <option value="乙亥">乙亥</option>
+                        <option value="丙子">丙子</option>
+                        <option value="丁丑">丁丑</option>
+                        <option value="戊寅">戊寅</option>
+                        <option value="己卯">己卯</option>
+                        <option value="庚辰">庚辰</option>
+                        <option value="辛巳">辛巳</option>
+                        <option value="壬午">壬午</option>
+                        <option value="癸未">癸未</option>
+                        <option value="甲申">甲申</option>
+                        <option value="乙酉">乙酉</option>
+                        <option value="丙戌">丙戌</option>
+                        <option value="丁亥">丁亥</option>
+                        <option value="戊子">戊子</option>
+                        <option value="己丑">己丑</option>
+                        <option value="庚寅">庚寅</option>
+                        <option value="辛卯">辛卯</option>
+                        <option value="壬辰">壬辰</option>
+                        <option value="癸巳">癸巳</option>
+                        <option value="甲午">甲午</option>
+                        <option value="乙未">乙未</option>
+                        <option value="丙申">丙申</option>
+                        <option value="丁酉">丁酉</option>
+                        <option value="戊戌">戊戌</option>
+                        <option value="己亥">己亥</option>
+                        <option value="庚子">庚子</option>
+                        <option value="辛丑">辛丑</option>
+                        <option value="壬寅">壬寅</option>
+                        <option value="癸卯">癸卯</option>
+                        <option value="甲辰">甲辰</option>
+                        <option value="乙巳">乙巳</option>
+                        <option value="丙午">丙午</option>
+                        <option value="丁未">丁未</option>
+                        <option value="戊申">戊申</option>
+                        <option value="己酉">己酉</option>
+                        <option value="庚戌">庚戌</option>
+                        <option value="辛亥">辛亥</option>
+                        <option value="壬子">壬子</option>
+                        <option value="癸丑">癸丑</option>
+                        <option value="甲寅">甲寅</option>
+                        <option value="乙卯">乙卯</option>
+                        <option value="丙辰">丙辰</option>
+                        <option value="丁巳">丁巳</option>
+                        <option value="戊午">戊午</option>
+                        <option value="己未">己未</option>
+                        <option value="庚申">庚申</option>
+                        <option value="辛酉">辛酉</option>
+                        <option value="壬戌">壬戌</option>
+                        <option value="癸亥">癸亥</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>時：</label>
+                    <select id="hour-jiazi">
+                        <option value="">選擇時</option>
+                        <option value="甲子">甲子</option>
+                        <option value="乙丑">乙丑</option>
+                        <option value="丙寅">丙寅</option>
+                        <option value="丁卯">丁卯</option>
+                        <option value="戊辰">戊辰</option>
+                        <option value="己巳">己巳</option>
+                        <option value="庚午">庚午</option>
+                        <option value="辛未">辛未</option>
+                        <option value="壬申">壬申</option>
+                        <option value="癸酉">癸酉</option>
+                        <option value="甲戌">甲戌</option>
+                        <option value="乙亥">乙亥</option>
+                        <option value="丙子">丙子</option>
+                        <option value="丁丑">丁丑</option>
+                        <option value="戊寅">戊寅</option>
+                        <option value="己卯">己卯</option>
+                        <option value="庚辰">庚辰</option>
+                        <option value="辛巳">辛巳</option>
+                        <option value="壬午">壬午</option>
+                        <option value="癸未">癸未</option>
+                        <option value="甲申">甲申</option>
+                        <option value="乙酉">乙酉</option>
+                        <option value="丙戌">丙戌</option>
+                        <option value="丁亥">丁亥</option>
+                        <option value="戊子">戊子</option>
+                        <option value="己丑">己丑</option>
+                        <option value="庚寅">庚寅</option>
+                        <option value="辛卯">辛卯</option>
+                        <option value="壬辰">壬辰</option>
+                        <option value="癸巳">癸巳</option>
+                        <option value="甲午">甲午</option>
+                        <option value="乙未">乙未</option>
+                        <option value="丙申">丙申</option>
+                        <option value="丁酉">丁酉</option>
+                        <option value="戊戌">戊戌</option>
+                        <option value="己亥">己亥</option>
+                        <option value="庚子">庚子</option>
+                        <option value="辛丑">辛丑</option>
+                        <option value="壬寅">壬寅</option>
+                        <option value="癸卯">癸卯</option>
+                        <option value="甲辰">甲辰</option>
+                        <option value="乙巳">乙巳</option>
+                        <option value="丙午">丙午</option>
+                        <option value="丁未">丁未</option>
+                        <option value="戊申">戊申</option>
+                        <option value="己酉">己酉</option>
+                        <option value="庚戌">庚戌</option>
+                        <option value="辛亥">辛亥</option>
+                        <option value="壬子">壬子</option>
+                        <option value="癸丑">癸丑</option>
+                        <option value="甲寅">甲寅</option>
+                        <option value="乙卯">乙卯</option>
+                        <option value="丙辰">丙辰</option>
+                        <option value="丁巳">丁巳</option>
+                        <option value="戊午">戊午</option>
+                        <option value="己未">己未</option>
+                        <option value="庚申">庚申</option>
+                        <option value="辛酉">辛酉</option>
+                        <option value="壬戌">壬戌</option>
+                        <option value="癸亥">癸亥</option>
                     </select>
                 </div>
             </div>
@@ -291,17 +511,70 @@
                     <label>本卦：</label>
                     <select id="original-gua">
                         <option value="">選擇本卦</option>
-                        <option value="乾為天">1. 乾為天</option>
-                        <option value="坤為地">2. 坤為地</option>
-                        <option value="水雷屯">3. 水雷屯</option>
-                        <option value="山水蒙">4. 山水蒙</option>
-                        <option value="水天需">5. 水天需</option>
-                        <option value="天水訟">6. 天水訟</option>
-                        <option value="地水師">7. 地水師</option>
-                        <option value="水地比">8. 水地比</option>
-                        <option value="風天小畜">9. 風天小畜</option>
-                        <option value="天澤履">10. 天澤履</option>
-                        <!-- 這裡可以繼續添加其他64卦 -->
+                        <option value="乾為天">乾為天</option>
+                        <option value="天地否">天地否</option>
+                        <option value="天澤履">天澤履</option>
+                        <option value="天山遯">天山遯</option>
+                        <option value="天火同人">天火同人</option>
+                        <option value="天水訟">天水訟</option>
+                        <option value="天雷无妄">天雷无妄</option>
+                        <option value="天風姤">天風姤</option>
+                        <option value="地天泰">地天泰</option>
+                        <option value="坤為地">坤為地</option>
+                        <option value="地澤臨">地澤臨</option>
+                        <option value="地山謙">地山謙</option>
+                        <option value="地火明夷">地火明夷</option>
+                        <option value="地水師">地水師</option>
+                        <option value="地雷復">地雷復</option>
+                        <option value="地風升">地風升</option>
+                        <option value="澤天夬">澤天夬</option>
+                        <option value="澤地萃">澤地萃</option>
+                        <option value="兌為澤">兌為澤</option>
+                        <option value="澤山咸">澤山咸</option>
+                        <option value="澤火革">澤火革</option>
+                        <option value="澤水困">澤水困</option>
+                        <option value="澤雷隨">澤雷隨</option>
+                        <option value="澤風大過">澤風大過</option>
+                        <option value="山天大畜">山天大畜</option>
+                        <option value="山地剝">山地剝</option>
+                        <option value="山澤損">山澤損</option>
+                        <option value="艮為山">艮為山</option>
+                        <option value="山火賁">山火賁</option>
+                        <option value="山水蒙">山水蒙</option>
+                        <option value="山雷頤">山雷頤</option>
+                        <option value="山風蠱">山風蠱</option>
+                        <option value="火天大有">火天大有</option>
+                        <option value="火地晉">火地晉</option>
+                        <option value="火澤睽">火澤睽</option>
+                        <option value="火山旅">火山旅</option>
+                        <option value="離為火">離為火</option>
+                        <option value="火水未濟">火水未濟</option>
+                        <option value="火雷噬嗑">火雷噬嗑</option>
+                        <option value="火風鼎">火風鼎</option>
+                        <option value="水天需">水天需</option>
+                        <option value="水地比">水地比</option>
+                        <option value="水澤節">水澤節</option>
+                        <option value="水山蹇">水山蹇</option>
+                        <option value="水火既濟">水火既濟</option>
+                        <option value="坎為水">坎為水</option>
+                        <option value="水雷屯">水雷屯</option>
+                        <option value="水風井">水風井</option>
+                        <option value="雷天大壯">雷天大壯</option>
+                        <option value="雷地豫">雷地豫</option>
+                        <option value="雷澤歸妹">雷澤歸妹</option>
+                        <option value="雷山小過">雷山小過</option>
+                        <option value="雷火豐">雷火豐</option>
+                        <option value="雷水解">雷水解</option>
+                        <option value="震為雷">震為雷</option>
+                        <option value="雷風恒">雷風恒</option>
+                        <option value="風天小畜">風天小畜</option>
+                        <option value="風地觀">風地觀</option>
+                        <option value="風澤中孚">風澤中孚</option>
+                        <option value="風山漸">風山漸</option>
+                        <option value="風火家人">風火家人</option>
+                        <option value="風水渙">風水渙</option>
+                        <option value="風雷益">風雷益</option>
+                        <option value="巽為風">巽為風</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -314,47 +587,85 @@
                         <option value="歸魂">歸魂</option>
                     </select>
                 </div>
-            </div>
-            
-            <div class="form-row">
                 <div class="form-group">
-                    <label>是否有變卦：</label>
-                    <select id="has-changed-gua" onchange="toggleChangedGua()">
-                        <option value="no">無變卦</option>
-                        <option value="yes">有變卦</option>
+                    <label>變卦：</label>
+                    <select id="changed-gua">
+                        <option value="">選擇變卦</option>
+                        <option value="乾為天">乾為天</option>
+                        <option value="天地否">天地否</option>
+                        <option value="天澤履">天澤履</option>
+                        <option value="天山遯">天山遯</option>
+                        <option value="天火同人">天火同人</option>
+                        <option value="天水訟">天水訟</option>
+                        <option value="天雷无妄">天雷无妄</option>
+                        <option value="天風姤">天風姤</option>
+                        <option value="地天泰">地天泰</option>
+                        <option value="坤為地">坤為地</option>
+                        <option value="地澤臨">地澤臨</option>
+                        <option value="地山謙">地山謙</option>
+                        <option value="地火明夷">地火明夷</option>
+                        <option value="地水師">地水師</option>
+                        <option value="地雷復">地雷復</option>
+                        <option value="地風升">地風升</option>
+                        <option value="澤天夬">澤天夬</option>
+                        <option value="澤地萃">澤地萃</option>
+                        <option value="兌為澤">兌為澤</option>
+                        <option value="澤山咸">澤山咸</option>
+                        <option value="澤火革">澤火革</option>
+                        <option value="澤水困">澤水困</option>
+                        <option value="澤雷隨">澤雷隨</option>
+                        <option value="澤風大過">澤風大過</option>
+                        <option value="山天大畜">山天大畜</option>
+                        <option value="山地剝">山地剝</option>
+                        <option value="山澤損">山澤損</option>
+                        <option value="艮為山">艮為山</option>
+                        <option value="山火賁">山火賁</option>
+                        <option value="山水蒙">山水蒙</option>
+                        <option value="山雷頤">山雷頤</option>
+                        <option value="山風蠱">山風蠱</option>
+                        <option value="火天大有">火天大有</option>
+                        <option value="火地晉">火地晉</option>
+                        <option value="火澤睽">火澤睽</option>
+                        <option value="火山旅">火山旅</option>
+                        <option value="離為火">離為火</option>
+                        <option value="火水未濟">火水未濟</option>
+                        <option value="火雷噬嗑">火雷噬嗑</option>
+                        <option value="火風鼎">火風鼎</option>
+                        <option value="水天需">水天需</option>
+                        <option value="水地比">水地比</option>
+                        <option value="水澤節">水澤節</option>
+                        <option value="水山蹇">水山蹇</option>
+                        <option value="水火既濟">水火既濟</option>
+                        <option value="坎為水">坎為水</option>
+                        <option value="水雷屯">水雷屯</option>
+                        <option value="水風井">水風井</option>
+                        <option value="雷天大壯">雷天大壯</option>
+                        <option value="雷地豫">雷地豫</option>
+                        <option value="雷澤歸妹">雷澤歸妹</option>
+                        <option value="雷山小過">雷山小過</option>
+                        <option value="雷火豐">雷火豐</option>
+                        <option value="雷水解">雷水解</option>
+                        <option value="震為雷">震為雷</option>
+                        <option value="雷風恒">雷風恒</option>
+                        <option value="風天小畜">風天小畜</option>
+                        <option value="風地觀">風地觀</option>
+                        <option value="風澤中孚">風澤中孚</option>
+                        <option value="風山漸">風山漸</option>
+                        <option value="風火家人">風火家人</option>
+                        <option value="風水渙">風水渙</option>
+                        <option value="風雷益">風雷益</option>
+                        <option value="巽為風">巽為風</option>
                     </select>
                 </div>
-            </div>
-            
-            <div id="changed-gua-section" style="display: none;">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>變卦：</label>
-                        <select id="changed-gua">
-                            <option value="">選擇變卦</option>
-                            <option value="乾為天">1. 乾為天</option>
-                            <option value="坤為地">2. 坤為地</option>
-                            <option value="水雷屯">3. 水雷屯</option>
-                            <option value="山水蒙">4. 山水蒙</option>
-                            <option value="水天需">5. 水天需</option>
-                            <option value="天水訟">6. 天水訟</option>
-                            <option value="地水師">7. 地水師</option>
-                            <option value="水地比">8. 水地比</option>
-                            <option value="風天小畜">9. 風天小畜</option>
-                            <option value="天澤履">10. 天澤履</option>
-                            <!-- 這裡可以繼續添加其他64卦 -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>變卦特殊屬性：</label>
-                        <select id="changed-special">
-                            <option value="">無特殊</option>
-                            <option value="六沖">六沖</option>
-                            <option value="六合">六合</option>
-                            <option value="游魂">游魂</option>
-                            <option value="歸魂">歸魂</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label>變卦特殊屬性：</label>
+                    <select id="changed-special">
+                        <option value="">無特殊</option>
+                        <option value="六沖">六沖</option>
+                        <option value="六合">六合</option>
+                        <option value="游魂">游魂</option>
+                        <option value="歸魂">歸魂</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -420,7 +731,6 @@
         // 初始化頁面
         function initializePage() {
             generateYaoInputs();
-            toggleChangedGua(); // 初始化變卦顯示狀態
         }
 
         // 生成六爻輸入區域
@@ -478,7 +788,7 @@
                         </div>
                         <div class="form-group">
                             <label>變卦(十二地支)：</label>
-                            <select id="changed-branch-${i}" class="changed-gua-field">
+                            <select id="changed-branch-${i}" class="changed-yao-field">
                                 <option value="">選擇地支</option>
                                 ${earthlyBranches.map(branch => `<option value="${branch}">${branch}</option>`).join('')}
                             </select>
@@ -507,23 +817,19 @@
             }
         }
 
-        // 控制變卦部分的顯示/隱藏
-        function toggleChangedGua() {
-            const hasChangedGua = document.getElementById('has-changed-gua').value;
-            const changedGuaSection = document.getElementById('changed-gua-section');
-            const changedGuaFields = document.querySelectorAll('.changed-gua-field');
+        // 控制單一爻的變爻部分顯示/隱藏
+        function toggleSingleChangedYao(yaoIndex) {
+            const hasChanged = document.getElementById(`has-changed-${yaoIndex}`).value;
+            const changedSection = document.getElementById(`changed-section-${yaoIndex}`);
+            const changedBranch = document.getElementById(`changed-branch-${yaoIndex}`);
+            const changedRelative = document.getElementById(`changed-relative-${yaoIndex}`);
             
-            if (hasChangedGua === 'yes') {
-                changedGuaSection.style.display = 'block';
-                changedGuaFields.forEach(field => {
-                    field.closest('.form-group').style.display = 'flex';
-                });
+            if (hasChanged === 'yes') {
+                changedSection.style.display = 'block';
             } else {
-                changedGuaSection.style.display = 'none';
-                changedGuaFields.forEach(field => {
-                    field.closest('.form-group').style.display = 'none';
-                    field.value = ''; // 清空值
-                });
+                changedSection.style.display = 'none';
+                changedBranch.value = ''; // 清空值
+                changedRelative.value = ''; // 清空值
             }
         }
 
@@ -571,8 +877,15 @@
                 // 收集陰陽
                 const yinyang = document.querySelector(`input[name="yinyang-${i}"]:checked`)?.value || '';
                 
-                if (hasChangedGua === 'yes') {
-                    prompt += `| ${yaoNames[5-i]} | ${fushen} | ${fushenRelative} | ${animal} | ${originalRelative} | ${originalBranch} | ${special} | ${yinyang} | ${changedBranch} | ${changedRelative} |\n`;
+                // 檢查這一爻是否有變卦
+                const hasThisChanged = document.getElementById(`has-changed-${i}`).value === 'yes';
+                
+                if (hasAnyChangedYao) {
+                    if (hasThisChanged) {
+                        prompt += `| ${yaoNames[5-i]} | ${fushen} | ${fushenRelative} | ${animal} | ${originalRelative} | ${originalBranch} | ${special} | ${yinyang} | ${changedBranch} | ${changedRelative} |\n`;
+                    } else {
+                        prompt += `| ${yaoNames[5-i]} | ${fushen} | ${fushenRelative} | ${animal} | ${originalRelative} | ${originalBranch} | ${special} | ${yinyang} | 無變 | 無變 |\n`;
+                    }
                 } else {
                     prompt += `| ${yaoNames[5-i]} | ${fushen} | ${fushenRelative} | ${animal} | ${originalRelative} | ${originalBranch} | ${special} | ${yinyang} |\n`;
                 }
