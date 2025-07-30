@@ -736,16 +736,50 @@
         // 六獸選項
         const sixAnimals = ['青龍', '朱雀', '勾陳', '螣蛇', '白虎', '玄武'];
 
+        // 六獸循環順序
+        const sixAnimalsOrder = ['青龍', '朱雀', '勾陳', '螣蛇', '白虎', '玄武'];
+        
+        // 根據第一個選擇的六獸計算其他爻的六獸
+        function calculateOtherAnimals() {
+            // 找到第一個已選擇的六獸
+            let firstAnimalIndex = -1;
+            let firstYaoIndex = -1;
+            
+            for (let i = 5; i >= 0; i--) { // 從上爻到初爻查找
+                const animalSelect = document.getElementById(`animal-${i}`);
+                if (animalSelect && animalSelect.value) {
+                    firstAnimalIndex = sixAnimalsOrder.indexOf(animalSelect.value);
+                    firstYaoIndex = i;
+                    break;
+                }
+            }
+            
+            // 如果找到了第一個六獸，計算其他爻
+            if (firstAnimalIndex !== -1) {
+                for (let i = 5; i >= 0; i--) {
+                    if (i !== firstYaoIndex) {
+                        const animalSelect = document.getElementById(`animal-${i}`);
+                        if (animalSelect && !animalSelect.value) {
+                            // 計算相對位置的六獸
+                            const offset = firstYaoIndex - i;
+                            const targetIndex = (firstAnimalIndex - offset + 6) % 6;
+                            animalSelect.value = sixAnimalsOrder[targetIndex];
+                        }
+                    }
+                }
+            }
+        }
+
         // 生成六爻輸入區域
         function generateYaoInputs() {
             const container = document.getElementById('yao-container');
-            const yaoNames = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
+            const yaoNames = ['上爻', '五爻', '四爻', '三爻', '二爻', '初爻']; // 改為從上到下
             
-            for (let i = 0; i < 6; i++) {
+            for (let i = 5; i >= 0; i--) { // 改為從5到0，對應上爻到初爻
                 const yaoDiv = document.createElement('div');
                 yaoDiv.className = 'yao-item';
                 yaoDiv.innerHTML = `
-                    <h3>${yaoNames[i]}</h3>
+                    <h3>${yaoNames[5-i]}</h3>
                     
                     <div class="form-row">
                         <div class="form-group">
@@ -756,22 +790,32 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>伏神六親：</label>
-                            <select id="fushen-relative-${i}">
-                                <option value="">無</option>
-                                ${sixRelatives.map(rel => `<option value="${rel}">${rel}</option>`).join('')}
+                            <label>伏神是否空亡：</label>
+                            <select id="fushen-kong-${i}">
+                                <option value="否">否</option>
+                                <option value="是">是</option>
                             </select>
                         </div>
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group">
+                            <label>伏神六親：</label>
+                            <select id="fushen-relative-${i}">
+                                <option value="">無</option>
+                                ${sixRelatives.map(rel => `<option value="${rel}">${rel}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label>六獸：</label>
-                            <select id="animal-${i}">
+                            <select id="animal-${i}" onchange="calculateOtherAnimals()">
                                 <option value="">選擇六獸</option>
                                 ${sixAnimals.map(animal => `<option value="${animal}">${animal}</option>`).join('')}
                             </select>
                         </div>
+                    </div>
+                    
+                    <div class="form-row">
                         <div class="form-group">
                             <label>本卦六親：</label>
                             <select id="original-relative-${i}">
@@ -779,14 +823,21 @@
                                 ${sixRelatives.map(rel => `<option value="${rel}">${rel}</option>`).join('')}
                             </select>
                         </div>
-                    </div>
-                    
-                    <div class="form-row">
                         <div class="form-group">
                             <label>裝卦(十二地支)：</label>
                             <select id="original-branch-${i}">
                                 <option value="">選擇地支</option>
                                 ${earthlyBranches.map(branch => `<option value="${branch}">${branch}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>裝卦是否空亡：</label>
+                            <select id="original-kong-${i}">
+                                <option value="否">否</option>
+                                <option value="是">是</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -800,6 +851,13 @@
                     
                     <div class="form-row">
                         <div class="form-group">
+                            <label>變卦是否空亡：</label>
+                            <select id="changed-kong-${i}">
+                                <option value="否">否</option>
+                                <option value="是">是</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label>變卦六親：</label>
                             <select id="changed-relative-${i}">
                                 <option value="無">無</option>
@@ -812,7 +870,6 @@
                         <label><input type="checkbox" id="shi-${i}"> 世爻</label>
                         <label><input type="checkbox" id="ying-${i}"> 應爻</label>
                         <label><input type="checkbox" id="body-${i}"> 卦身</label>
-                        <label><input type="checkbox" id="kongwang-${i}"> 空亡</label>
                         <label><input type="radio" name="yinyang-${i}" value="陽爻"> 陽爻</label>
                         <label><input type="radio" name="yinyang-${i}" value="陰爻"> 陰爻</label>
                     </div>
