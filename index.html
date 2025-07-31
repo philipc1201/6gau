@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>六爻解卦工具</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 登入遮罩層 -->
+    <div class="login-overlay" id="login-overlay">
+        <div class="login-box">
+            <h2>六爻解卦工具</h2>
+            <p>請輸入密碼進入系統</p>
+            <input type="password" id="password-input" placeholder="請輸入密碼" onkeypress="handlePasswordEnter(event)">
+            <button class="login-btn" onclick="checkPassword()">進入系統</button>
+            <div class="error-message" id="error-message" style="display: none;">密碼錯誤，請重試</div>
+        </div>
+    </div>
+
+    <div class="container" id="main-container" style="display: none;">
+        <h1>六爻解卦工具</h1>
+        
+        <!-- 問事內容 -->
+        <div class="section">
+            <h2>問事內容</h2>
+            <div class="form-row">
+                <div class="form-group" style="flex: 1;">
+                    <label>問事人之事：</label>
+                    <textarea id="question-content" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; resize: vertical;" placeholder="請描述問事的具體內容..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 六十甲子時間 -->
+        <div class="section">
+            <h2>六十甲子時間</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>年：</label>
+                    <select id="year-jiazi"></select>
+                </div>
+                <div class="form-group">
+                    <label>月：</label>
+                    <select id="month-jiazi"></select>
+                </div>
+                <div class="form-group">
+                    <label>日：</label>
+                    <select id="day-jiazi"></select>
+                </div>
+                <div class="form-group">
+                    <label>時：</label>
+                    <select id="hour-jiazi"></select>
+                </div>
+            </div>
+        </div>
+
+        <!-- 本卦與變卦 -->
+        <div class="section">
+            <h2>本卦與變卦</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>本卦：</label>
+                    <select id="original-gua"></select>
+                </div>
+                <div class="form-group">
+                    <label>本卦特殊屬性：</label>
+                    <select id="original-special">
+                        <option value="">無特殊</option>
+                        <option value="六沖">六沖</option>
+                        <option value="六合">六合</option>
+                        <option value="游魂">游魂</option>
+                        <option value="歸魂">歸魂</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>變卦：</label>
+                    <select id="changed-gua"></select>
+                </div>
+                <div class="form-group">
+                    <label>變卦特殊屬性：</label>
+                    <select id="changed-special">
+                        <option value="">無特殊</option>
+                        <option value="六沖">六沖</option>
+                        <option value="六合">六合</option>
+                        <option value="游魂">游魂</option>
+                        <option value="歸魂">歸魂</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- 六爻詳細資料 -->
+        <div class="section">
+            <h2>六爻詳細資料</h2>
+            <div class="yao-container" id="yao-container">
+                <!-- 六爻將通過JavaScript生成 -->
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn-generate" onclick="generatePrompt()">生成Prompt</button>
+        </div>
+
+        <!-- 結果顯示區域 -->
+        <div class="result-container" id="result-container">
+            <h2>生成的Prompt：</h2>
+            <textarea class="result-textarea" id="result-textarea" readonly></textarea>
+            <button class="btn-copy" onclick="copyToClipboard()">複製到剪貼板</button>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="data.js"></script>
+    <script src="functions.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
