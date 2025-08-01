@@ -25,6 +25,14 @@ function handlePasswordEnter(event) {
 
 // 根據地支判斷五行
 function getWuXingFromBranch(branch) {
+    // 如果地支已經帶五行，直接提取
+    if (branch.includes('水')) return '水';
+    if (branch.includes('木')) return '木';
+    if (branch.includes('火')) return '火';
+    if (branch.includes('金')) return '金';
+    if (branch.includes('土')) return '土';
+    
+    // 如果是純地支（用於六十甲子），按原來邏輯判斷
     return DATA.branchWuXing[branch] || '';
 }
 
