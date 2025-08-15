@@ -3,116 +3,1051 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>六爻解卦工具</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>六爻起卦工具（完整版）</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', '微軟正黑體', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #8B4513;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .section h3 {
+            margin-top: 0;
+            color: #8B4513;
+            border-bottom: 2px solid #8B4513;
+            padding-bottom: 5px;
+        }
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .input-item {
+            flex: 1;
+            min-width: 120px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 60px;
+            resize: vertical;
+        }
+        .hexagram-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+        .hexagram-table th, .hexagram-table td {
+            border: 1px solid #333;
+            padding: 6px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .hexagram-table th {
+            background-color: #8B4513;
+            color: white;
+        }
+        .yao-line {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .yang { color: #FF0000; }
+        .yin { color: #0000FF; }
+        .dong-yao { 
+            background-color: #FFE4B5 !important;
+            color: #8B0000;
+        }
+        .kong-wang {
+            background-color: #E6E6FA !important;
+        }
+        .fu-shen {
+            font-size: 10px;
+            color: #666;
+            font-style: italic;
+        }
+        .bian-info {
+            font-size: 11px;
+            color: #800080;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #8B4513;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #A0522D;
+        }
+        .prompt-output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .copy-btn {
+            background-color: #4CAF50;
+            margin-top: 10px;
+        }
+        .copy-btn:hover {
+            background-color: #45a049;
+        }
+        .coin-section {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .coin-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .coin-input label {
+            min-width: 80px;
+            margin-bottom: 0;
+        }
+        .coin-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .coin-btn {
+            padding: 5px 10px;
+            font-size: 12px;
+            margin: 0;
+        }
+        .auto-btn {
+            background-color: #FF6347;
+            margin-left: 10px;
+        }
+        .auto-btn:hover {
+            background-color: #FF4500;
+        }
+        .gua-type {
+            color: #008B8B;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
-    <!-- 登入遮罩層 -->
-    <div class="login-overlay" id="login-overlay">
-        <div class="login-box">
-            <h2>六爻解卦工具</h2>
-            <p>請輸入密碼進入系統</p>
-            <input type="password" id="password-input" placeholder="請輸入密碼" onkeypress="handlePasswordEnter(event)">
-            <button class="login-btn" onclick="checkPassword()">進入系統</button>
-            <div class="error-message" id="error-message" style="display: none;">密碼錯誤，請重試</div>
-        </div>
-    </div>
-
-    <div class="container" id="main-container" style="display: none;">
-        <h1>六爻解卦工具</h1>
+    <div class="container">
+        <h1>六爻起卦工具（完整版）</h1>
         
-        <!-- 問事內容 -->
         <div class="section">
-            <h2>問事內容</h2>
-            <div class="form-row">
-                <div class="form-group" style="flex: 1;">
-                    <label>問事人之事：</label>
-                    <textarea id="question-content" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; resize: vertical;" placeholder="請描述問事的具體內容..."></textarea>
+            <h3>四柱信息</h3>
+            <div class="input-group">
+                <div class="input-item">
+                    <label for="year">年柱:</label>
+                    <input type="text" id="year" placeholder="例：甲子">
+                </div>
+                <div class="input-item">
+                    <label for="month">月柱:</label>
+                    <input type="text" id="month" placeholder="例：丙寅">
+                </div>
+                <div class="input-item">
+                    <label for="day">日柱:</label>
+                    <input type="text" id="day" placeholder="例：戊辰">
+                </div>
+                <div class="input-item">
+                    <label for="hour">時柱:</label>
+                    <input type="text" id="hour" placeholder="例：壬戌">
                 </div>
             </div>
         </div>
 
-        <!-- 六十甲子時間 -->
-        <div class="section">
-            <h2>六十甲子時間</h2>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>年：</label>
-                    <select id="year-jiazi"></select>
+        <div class="section coin-section">
+            <h3>投擲三錢起卦（按古法：乾隆通寶）</h3>
+            <p style="font-size: 12px; color: #666;">
+                字面為正（陽），背面為陰。兩字一背為少陽（—），兩背一字為少陰（- -），三背為老陽變爻（—O），三字為老陰變爻（- -X）
+            </p>
+            
+            <div class="coin-input">
+                <label>第一次（初爻）:</label>
+                <div class="coin-buttons">
+                    <button class="coin-btn" onclick="setCoinResult(1, '字字字')">三字</button>
+                    <button class="coin-btn" onclick="setCoinResult(1, '字字背')">兩字一背</button>
+                    <button class="coin-btn" onclick="setCoinResult(1, '字背背')">一字兩背</button>
+                    <button class="coin-btn" onclick="setCoinResult(1, '背背背')">三背</button>
                 </div>
-                <div class="form-group">
-                    <label>月：</label>
-                    <select id="month-jiazi"></select>
-                </div>
-                <div class="form-group">
-                    <label>日：</label>
-                    <select id="day-jiazi"></select>
-                </div>
-                <div class="form-group">
-                    <label>時：</label>
-                    <select id="hour-jiazi"></select>
-                </div>
+                <span id="coin1-result"></span>
             </div>
-        </div>
-
-        <!-- 本卦與變卦 -->
-        <div class="section">
-            <h2>本卦與變卦</h2>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>本卦：</label>
-                    <select id="original-gua"></select>
+            
+            <div class="coin-input">
+                <label>第二次（二爻）:</label>
+                <div class="coin-buttons">
+                    <button class="coin-btn" onclick="setCoinResult(2, '字字字')">三字</button>
+                    <button class="coin-btn" onclick="setCoinResult(2, '字字背')">兩字一背</button>
+                    <button class="coin-btn" onclick="setCoinResult(2, '字背背')">一字兩背</button>
+                    <button class="coin-btn" onclick="setCoinResult(2, '背背背')">三背</button>
                 </div>
-                <div class="form-group">
-                    <label>本卦特殊屬性：</label>
-                    <select id="original-special">
-                        <option value="">無特殊</option>
-                        <option value="六沖">六沖</option>
-                        <option value="六合">六合</option>
-                        <option value="游魂">游魂</option>
-                        <option value="歸魂">歸魂</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>變卦：</label>
-                    <select id="changed-gua"></select>
-                </div>
-                <div class="form-group">
-                    <label>變卦特殊屬性：</label>
-                    <select id="changed-special">
-                        <option value="">無特殊</option>
-                        <option value="六沖">六沖</option>
-                        <option value="六合">六合</option>
-                        <option value="游魂">游魂</option>
-                        <option value="歸魂">歸魂</option>
-                    </select>
-                </div>
+                <span id="coin2-result"></span>
             </div>
-        </div>
-
-        <!-- 六爻詳細資料 -->
-        <div class="section">
-            <h2>六爻詳細資料</h2>
-            <div class="yao-container" id="yao-container">
-                <!-- 六爻將通過JavaScript生成 -->
+            
+            <div class="coin-input">
+                <label>第三次（三爻）:</label>
+                <div class="coin-buttons">
+                    <button class="coin-btn" onclick="setCoinResult(3, '字字字')">三字</button>
+                    <button class="coin-btn" onclick="setCoinResult(3, '字字背')">兩字一背</button>
+                    <button class="coin-btn" onclick="setCoinResult(3, '字背背')">一字兩背</button>
+                    <button class="coin-btn" onclick="setCoinResult(3, '背背背')">三背</button>
+                </div>
+                <span id="coin3-result"></span>
             </div>
+            
+            <div class="coin-input">
+                <label>第四次（四爻）:</label>
+                <div class="coin-buttons">
+                    <button class="coin-btn" onclick="setCoinResult(4, '字字字')">三字</button>
+                    <button class="coin-btn" onclick="setCoinResult(4, '字字背')">兩字一背</button>
+                    <button class="coin-btn" onclick="setCoinResult(4, '字背背')">一字兩背</button>
+                    <button class="coin-btn" onclick="setCoinResult(4, '背背背')">三背</button>
+                </div>
+                <span id="coin4-result"></span>
+            </div>
+            
+            <div class="coin-input">
+                <label>第五次（五爻）:</label>
+                <div class="coin-buttons">
+                    <button class="coin-btn" onclick="setCoinResult(5, '字字字')">三字</button>
+                    <button class="coin-btn" onclick="setCoinResult(5, '字字背')">兩字一背</button>
+                    <button class="coin-btn" onclick="setCoinResult(5, '字背背')">一字兩背</button>
+                    <button class="coin-btn" onclick="setCoinResult(5, '背背背')">三背</button>
+                </div>
+                <span id="coin5-result"></span>
+            </div>
+            
+            <div class="coin-input">
+                <label>第六次（上爻）:</label>
+                <div class="coin-buttons">
+                    <button class="coin-btn" onclick="setCoinResult(6, '字字字')">三字</button>
+                    <button class="coin-btn" onclick="setCoinResult(6, '字字背')">兩字一背</button>
+                    <button class="coin-btn" onclick="setCoinResult(6, '字背背')">一字兩背</button>
+                    <button class="coin-btn" onclick="setCoinResult(6, '背背背')">三背</button>
+                </div>
+                <span id="coin6-result"></span>
+            </div>
+            
+            <button class="auto-btn" onclick="autoThrowCoins()">自動投擲六次</button>
         </div>
 
-        <div class="btn-container">
-            <button class="btn-generate" onclick="generatePrompt()">生成Prompt</button>
+        <div class="section">
+            <h3>問事內容</h3>
+            <textarea id="question" placeholder="請輸入所問何事..."></textarea>
         </div>
 
-        <!-- 結果顯示區域 -->
-        <div class="result-container" id="result-container">
-            <h2>生成的Prompt：</h2>
-            <textarea class="result-textarea" id="result-textarea" readonly></textarea>
-            <button class="btn-copy" onclick="copyToClipboard()">複製到剪貼板</button>
+        <div class="buttons">
+            <button onclick="generateTable()">生成完整六爻表</button>
+            <button onclick="exportPrompt()">導出AI分析Prompt</button>
         </div>
+
+        <div id="hexagram-display"></div>
+        <div id="prompt-display"></div>
     </div>
 
-    <script src="config.js"></script>
-    <script src="data.js"></script>
-    <script src="functions.js"></script>
-    <script src="main.js"></script>
+    <script>
+        // 卦象數據（更新世應位置）
+        const guaData = {
+            // 乾宮
+            '111111': {name: '乾', fullName: '乾為天', shiYing: [6,3], type: ''},
+            '111110': {name: '姤', fullName: '天風姤', shiYing: [1,4], type: ''},
+            '111100': {name: '遯', fullName: '天山遯', shiYing: [2,5], type: ''},
+            '111000': {name: '否', fullName: '天地否', shiYing: [3,6], type: '六沖'},
+            '110000': {name: '觀', fullName: '風地觀', shiYing: [4,1], type: ''},
+            '100000': {name: '剝', fullName: '山地剝', shiYing: [5,2], type: ''},
+            '101000': {name: '晉', fullName: '火地晉', shiYing: [4,1], type: '游魂'},
+            '101111': {name: '大有', fullName: '火天大有', shiYing: [3,6], type: '歸魂'},
+            
+            // 震宮
+            '001001': {name: '震', fullName: '震為雷', shiYing: [6,3], type: ''},
+            '001000': {name: '豫', fullName: '雷地豫', shiYing: [1,4], type: ''},
+            '001010': {name: '解', fullName: '雷水解', shiYing: [2,5], type: ''},
+            '001110': {name: '恆', fullName: '雷風恆', shiYing: [3,6], type: '六合'},
+            '000110': {name: '升', fullName: '地風升', shiYing: [4,1], type: ''},
+            '010110': {name: '井', fullName: '水風井', shiYing: [5,2], type: ''},
+            '011110': {name: '大過', fullName: '澤風大過', shiYing: [4,1], type: '游魂'},
+            '011001': {name: '隨', fullName: '澤雷隨', shiYing: [3,6], type: '歸魂六沖'},
+            
+            // 坎宮
+            '010010': {name: '坎', fullName: '坎為水', shiYing: [6,3], type: ''},
+            '010011': {name: '節', fullName: '水澤節', shiYing: [1,4], type: ''},
+            '010001': {name: '屯', fullName: '水雷屯', shiYing: [2,5], type: ''},
+            '010101': {name: '既濟', fullName: '水火既濟', shiYing: [3,6], type: '六合'},
+            '011101': {name: '革', fullName: '澤火革', shiYing: [4,1], type: ''},
+            '001101': {name: '豐', fullName: '雷火豐', shiYing: [5,2], type: ''},
+            '000101': {name: '明夷', fullName: '地火明夷', shiYing: [4,1], type: '游魂'},
+            '000010': {name: '師', fullName: '地水師', shiYing: [3,6], type: '歸魂'},
+            
+            // 艮宮
+            '100100': {name: '艮', fullName: '艮為山', shiYing: [6,3], type: ''},
+            '100101': {name: '賁', fullName: '山火賁', shiYing: [1,4], type: ''},
+            '100111': {name: '大畜', fullName: '山天大畜', shiYing: [2,5], type: ''},
+            '100011': {name: '損', fullName: '山澤損', shiYing: [3,6], type: '六合'},
+            '101011': {name: '睽', fullName: '火澤睽', shiYing: [4,1], type: ''},
+            '111011': {name: '履', fullName: '天澤履', shiYing: [5,2], type: ''},
+            '110011': {name: '中孚', fullName: '風澤中孚', shiYing: [4,1], type: '游魂'},
+            '110100': {name: '漸', fullName: '風山漸', shiYing: [3,6], type: '歸魂六合'},
+            
+            // 坤宮
+            '000000': {name: '坤', fullName: '坤為地', shiYing: [6,3], type: ''},
+            '000001': {name: '復', fullName: '地雷復', shiYing: [1,4], type: ''},
+            '000011': {name: '臨', fullName: '地澤臨', shiYing: [2,5], type: ''},
+            '000111': {name: '泰', fullName: '地天泰', shiYing: [3,6], type: '六沖'},
+            '001111': {name: '大壯', fullName: '雷天大壯', shiYing: [4,1], type: ''},
+            '011111': {name: '夬', fullName: '澤天夬', shiYing: [5,2], type: ''},
+            '010111': {name: '需', fullName: '水天需', shiYing: [4,1], type: '游魂'},
+            '010000': {name: '比', fullName: '水地比', shiYing: [3,6], type: '歸魂'},
+            
+            // 巽宮
+            '110110': {name: '巽', fullName: '巽為風', shiYing: [6,3], type: ''},
+            '110111': {name: '小畜', fullName: '風天小畜', shiYing: [1,4], type: ''},
+            '110101': {name: '家人', fullName: '風火家人', shiYing: [2,5], type: ''},
+            '110001': {name: '益', fullName: '風雷益', shiYing: [3,6], type: '六合'},
+            '111001': {name: '無妄', fullName: '天雷無妄', shiYing: [4,1], type: ''},
+            '101001': {name: '噬嗑', fullName: '火雷噬嗑', shiYing: [5,2], type: ''},
+            '100001': {name: '頤', fullName: '山雷頤', shiYing: [4,1], type: '游魂'},
+            '100110': {name: '蠱', fullName: '山風蠱', shiYing: [3,6], type: '歸魂六沖'},
+            
+            // 離宮
+            '101101': {name: '離', fullName: '離為火', shiYing: [6,3], type: ''},
+            '101100': {name: '旅', fullName: '火山旅', shiYing: [1,4], type: ''},
+            '101110': {name: '鼎', fullName: '火風鼎', shiYing: [2,5], type: ''},
+            '101010': {name: '未濟', fullName: '火水未濟', shiYing: [3,6], type: '六合'},
+            '100010': {name: '蒙', fullName: '山水蒙', shiYing: [4,1], type: ''},
+            '110010': {name: '渙', fullName: '風水渙', shiYing: [5,2], type: ''},
+            '111010': {name: '訟', fullName: '天水訟', shiYing: [4,1], type: '游魂六沖'},
+            '111101': {name: '同人', fullName: '天火同人', shiYing: [3,6], type: '歸魂'},
+            
+            // 兌宮
+            '011011': {name: '兌', fullName: '兌為澤', shiYing: [6,3], type: ''},
+            '011010': {name: '困', fullName: '澤水困', shiYing: [1,4], type: ''},
+            '011000': {name: '萃', fullName: '澤地萃', shiYing: [2,5], type: ''},
+            '011100': {name: '咸', fullName: '澤山咸', shiYing: [3,6], type: '六合'},
+            '010100': {name: '蹇', fullName: '水山蹇', shiYing: [4,1], type: ''},
+            '000100': {name: '謙', fullName: '地山謙', shiYing: [5,2], type: ''},
+            '001100': {name: '小過', fullName: '雷山小過', shiYing: [4,1], type: '游魂'},
+            '001011': {name: '歸妹', fullName: '雷澤歸妹', shiYing: [3,6], type: '歸魂六合'}
+        };
+
+        // 六獸
+        const liuShou = ['青龍', '朱雀', '勾陳', '螣蛇', '白虎', '玄武'];
+
+        // 天干地支
+        const tianGan = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+        const diZhi = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+
+        // 五行
+        const wuXing = {
+            '甲': '木', '乙': '木', '丙': '火', '丁': '火', '戊': '土', '己': '土',
+            '庚': '金', '辛': '金', '壬': '水', '癸': '水',
+            '子': '水', '丑': '土', '寅': '木', '卯': '木', '辰': '土', '巳': '火',
+            '午': '火', '未': '土', '申': '金', '酉': '金', '戌': '土', '亥': '水'
+        };
+
+        // 六親關係
+        function getLiuQin(selfWuXing, targetWuXing) {
+            const relations = {
+                '木木': '兄弟', '木火': '子孫', '木土': '妻財', '木金': '官鬼', '木水': '父母',
+                '火火': '兄弟', '火土': '子孫', '火金': '妻財', '火水': '官鬼', '火木': '父母',
+                '土土': '兄弟', '土金': '子孫', '土水': '妻財', '土木': '官鬼', '土火': '父母',
+                '金金': '兄弟', '金水': '子孫', '金木': '妻財', '金火': '官鬼', '金土': '父母',
+                '水水': '兄弟', '水木': '子孫', '水火': '妻財', '水土': '官鬼', '水金': '父母'
+            };
+            return relations[selfWuXing + targetWuXing] || '';
+        }
+
+        // 八純卦的地支（從初爻到上爻）
+        const baChunGuaZhi = {
+            '乾': ['子', '寅', '辰', '午', '申', '戌'],  // 乾為天
+            '兌': ['巳', '卯', '丑', '亥', '酉', '未'],  // 兌為澤
+            '離': ['卯', '丑', '亥', '酉', '未', '巳'],  // 離為火
+            '震': ['子', '寅', '辰', '午', '申', '戌'],  // 震為雷
+            '巽': ['丑', '亥', '酉', '未', '巳', '卯'],  // 巽為風
+            '坎': ['寅', '辰', '午', '申', '戌', '子'],  // 坎為水
+            '艮': ['辰', '午', '申', '戌', '子', '寅'],  // 艮為山
+            '坤': ['未', '巳', '卯', '丑', '亥', '酉']   // 坤為地
+        };
+
+        let coinResults = [null, null, null, null, null, null];
+
+        function setCoinResult(index, result) {
+            let yaoType;
+            switch(result) {
+                case '字字字': yaoType = '老陰'; break;
+                case '字字背': yaoType = '少陽'; break;
+                case '字背背': yaoType = '少陰'; break;
+                case '背背背': yaoType = '老陽'; break;
+            }
+            
+            coinResults[index-1] = yaoType;
+            document.getElementById(`coin${index}-result`).innerHTML = 
+                `<strong>${result} → ${yaoType}</strong>`;
+        }
+
+        function autoThrowCoins() {
+            const options = ['字字字', '字字背', '字背背', '背背背'];
+            for (let i = 1; i <= 6; i++) {
+                const randomResult = options[Math.floor(Math.random() * 4)];
+                setCoinResult(i, randomResult);
+            }
+        }
+
+        function getYaoSymbol(yaoType) {
+            switch(yaoType) {
+                case '老陽': return '━━━━━━ ○';
+                case '少陽': return '━━━━━━';
+                case '老陰': return '━━  ━━ ×';
+                case '少陰': return '━━  ━━';
+                default: return '';
+            }
+        }
+
+        function getYaoProperty(yaoType) {
+            if (yaoType && yaoType.includes('陽')) return '1';
+            if (yaoType && yaoType.includes('陰')) return '0';
+            return '';
+        }
+
+        function isDongYao(yaoType) {
+            return yaoType && yaoType.includes('老');
+        }
+
+        function getGuaInfo(yaoBinary) {
+            return guaData[yaoBinary] || {name: '未知', fullName: '未知卦', shiYing: [1,4], type: ''};
+        }
+
+        function getKongWang(dayGan, dayZhi) {
+            const ganIndex = tianGan.indexOf(dayGan);
+            const zhiIndex = diZhi.indexOf(dayZhi);
+            if (ganIndex === -1 || zhiIndex === -1) return ['戌', '亥'];
+            
+            // 旬空計算
+            const xunStart = (zhiIndex - ganIndex + 12) % 12;
+            const kongStart = (xunStart + 10) % 12;
+            return [diZhi[kongStart], diZhi[(kongStart + 1) % 12]];
+        }
+
+        function getGuaGong(binary) {
+            // 根據八宮卦序表確定卦宮
+            const guaGongMap = {
+                // 乾宮
+                '111111': '乾', // 乾為天
+                '111110': '乾', // 天風姤  
+                '111100': '乾', // 天山遯
+                '111000': '乾', // 天地否
+                '110000': '乾', // 風地觀
+                '100000': '乾', // 山地剝
+                '101000': '乾', // 火地晉（游魂）
+                '101111': '乾', // 火天大有（歸魂）
+                
+                // 震宮
+                '001001': '震', // 震為雷
+                '001000': '震', // 雷地豫
+                '001010': '震', // 雷水解
+                '001110': '震', // 雷風恆
+                '000110': '震', // 地風升
+                '010110': '震', // 水風井
+                '011110': '震', // 澤風大過（游魂）
+                '011001': '震', // 澤雷隨（歸魂）
+                
+                // 坎宮
+                '010010': '坎', // 坎為水
+                '010011': '坎', // 水澤節
+                '010001': '坎', // 水雷屯
+                '010101': '坎', // 水火既濟
+                '011101': '坎', // 澤火革
+                '001101': '坎', // 雷火豐
+                '000101': '坎', // 地火明夷（游魂）
+                '000010': '坎', // 地水師（歸魂）
+                
+                // 艮宮
+                '100100': '艮', // 艮為山
+                '100101': '艮', // 山火賁
+                '100111': '艮', // 山天大畜
+                '100011': '艮', // 山澤損
+                '101011': '艮', // 火澤睽
+                '111011': '艮', // 天澤履
+                '110011': '艮', // 風澤中孚（游魂）
+                '110100': '艮', // 風山漸（歸魂）
+                
+                // 坤宮
+                '000000': '坤', // 坤為地
+                '000001': '坤', // 地雷復
+                '000011': '坤', // 地澤臨
+                '000111': '坤', // 地天泰
+                '001111': '坤', // 雷天大壯
+                '011111': '坤', // 澤天夬
+                '010111': '坤', // 水天需（游魂）
+                '010000': '坤', // 水地比（歸魂）
+                
+                // 巽宮
+                '110110': '巽', // 巽為風
+                '110111': '巽', // 風天小畜
+                '110101': '巽', // 風火家人
+                '110001': '巽', // 風雷益
+                '111001': '巽', // 天雷無妄
+                '101001': '巽', // 火雷噬嗑
+                '100001': '巽', // 山雷頤（游魂）
+                '100110': '巽', // 山風蠱（歸魂）
+                
+                // 離宮
+                '101101': '離', // 離為火
+                '101100': '離', // 火山旅
+                '101110': '離', // 火風鼎
+                '101010': '離', // 火水未濟
+                '100010': '離', // 山水蒙
+                '110010': '離', // 風水渙
+                '111010': '離', // 天水訟（游魂）
+                '111101': '離', // 天火同人（歸魂）
+                
+                // 兌宮
+                '011011': '兌', // 兌為澤
+                '011010': '兌', // 澤水困
+                '011000': '兌', // 澤地萃
+                '011100': '兌', // 澤山咸
+                '010100': '兌', // 水山蹇
+                '000100': '兌', // 地山謙
+                '001100': '兌', // 雷山小過（游魂）
+                '001011': '兌'  // 雷澤歸妹（歸魂）
+            };
+            
+            return guaGongMap[binary] || '乾';
+        }
+
+        function getGuaGongWuXing(guaGong) {
+            const wuXingMap = {
+                '乾': '金', '兌': '金', '離': '火', '震': '木',
+                '巽': '木', '坎': '水', '艮': '土', '坤': '土'
+            };
+            return wuXingMap[guaGong] || '金';
+        }
+
+        function getZhuangZhi(benGuaBinary) {
+            // 分上卦和下卦
+            const shangGua = benGuaBinary.substring(0, 3);  // 上三爻（六五四爻）
+            const xiaGua = benGuaBinary.substring(3, 6);    // 下三爻（三二初爻）
+            
+            // 八純卦的納甲規則
+            const naJiaMap = {
+                '乾': ['子', '寅', '辰', '午', '申', '戌'], // 內卦：子寅辰，外卦：午申戌
+                '坤': ['未', '巳', '卯', '丑', '亥', '酉'], // 內卦：未巳卯，外卦：丑亥酉
+                '震': ['子', '寅', '辰', '午', '申', '戌'], // 內卦：子寅辰，外卦：午申戌
+                '巽': ['丑', '亥', '酉', '未', '巳', '卯'], // 內卦：丑亥酉，外卦：未巳卯
+                '坎': ['寅', '辰', '午', '申', '戌', '子'], // 內卦：寅辰午，外卦：申戌子
+                '離': ['卯', '丑', '亥', '酉', '未', '巳'], // 內卦：卯丑亥，外卦：酉未巳
+                '艮': ['辰', '午', '申', '戌', '子', '寅'], // 內卦：辰午申，外卦：戌子寅
+                '兌': ['巳', '卯', '丑', '亥', '酉', '未']  // 內卦：巳卯丑，外卦：亥酉未
+            };
+            
+            // 八卦符號對應
+            const guaMap = {
+                '111': '乾', '011': '兌', '101': '離', '001': '震',
+                '110': '巽', '010': '坎', '100': '艮', '000': '坤'
+            };
+            
+            const shangGuaName = guaMap[shangGua];
+            const xiaGuaName = guaMap[xiaGua];
+            
+            // 獲取納甲地支
+            const shangGuaZhi = naJiaMap[shangGuaName];
+            const xiaGuaZhi = naJiaMap[xiaGuaName];
+            
+            // 組合地支：初爻到上爻
+            return [
+                xiaGuaZhi[0], // 初爻
+                xiaGuaZhi[1], // 二爻
+                xiaGuaZhi[2], // 三爻
+                shangGuaZhi[3], // 四爻
+                shangGuaZhi[4], // 五爻
+                shangGuaZhi[5]  // 上爻
+            ];
+        }
+
+        // 獲取伏神
+        function getFuShen(benGuaBinary, guaGongWuXing) {
+            const guaGong = getGuaGong(benGuaBinary);
+            const benGuaZhi = getZhuangZhi(benGuaBinary);
+            
+            // 獲取卦宮首卦的地支
+            const guaGongBinary = getGuaGongBinary(guaGong);
+            const guaGongZhi = getZhuangZhi(guaGongBinary);
+            
+            const fuShenList = [];
+            const benGuaLiuQinList = [];
+            
+            // 先獲取本卦所有的六親
+            for (let i = 0; i < 6; i++) {
+                const benZhi = benGuaZhi[i];
+                const benZhiWuXing = wuXing[benZhi];
+                const benLiuQin = getLiuQin(guaGongWuXing, benZhiWuXing);
+                benGuaLiuQinList.push(benLiuQin);
+            }
+            
+            // 檢查每個爻位，如果本宮該爻的六親在本卦中不存在，則為伏神
+            for (let i = 0; i < 6; i++) {
+                const gongZhi = guaGongZhi[i];
+                const gongZhiWuXing = wuXing[gongZhi];
+                const gongLiuQin = getLiuQin(guaGongWuXing, gongZhiWuXing);
+                
+                // 檢查這個六親是否在本卦中出現
+                if (!benGuaLiuQinList.includes(gongLiuQin)) {
+                    // 這個六親沒有出現，伏在對應爻位
+                    fuShenList.push({
+                        index: i,
+                        zhi: gongZhi,
+                        wuXing: gongZhiWuXing,
+                        liuQin: gongLiuQin
+                    });
+                }
+            }
+            
+            return fuShenList;
+        }
+
+        function getGuaGongBinary(guaGong) {
+            const binaryMap = {
+                '乾': '111111', '兌': '011011', '離': '101101', '震': '001001',
+                '巽': '110110', '坎': '010010', '艮': '100100', '坤': '000000'
+            };
+            return binaryMap[guaGong] || '111111';
+        }
+
+        // 獲取變卦地支和六親
+        function getBianGuaInfo(benGuaBinary, yaos, guaGongWuXing) {
+            // 構建變卦二進制（注意yaos是從上爻到初爻的順序）
+            const bianGuaBinary = yaos.map(yao => {
+                if (isDongYao(yao)) {
+                    return getYaoProperty(yao) === '1' ? '0' : '1';
+                }
+                return getYaoProperty(yao);
+            }).join('');
+            
+            // 獲取變卦的地支
+            const bianGuaZhi = getZhuangZhi(bianGuaBinary);
+            const bianGuaInfo = [];
+            
+            // 對每個爻位計算（注意要轉換索引）
+            for (let i = 0; i < 6; i++) {
+                // yaos是從上爻到初爻，所以要轉換索引
+                const yaoIndex = 5 - i;  // i=0(初爻)對應yaos[5], i=5(上爻)對應yaos[0]
+                
+                if (isDongYao(yaos[yaoIndex])) {
+                    const zhi = bianGuaZhi[i];  // bianGuaZhi是從初爻到上爻
+                    const zhiWuXing = wuXing[zhi];
+                    // 重要：變卦的六親要用主卦的卦宮五行來計算
+                    const liuQin = getLiuQin(guaGongWuXing, zhiWuXing);
+                    bianGuaInfo[i] = {
+                        index: i,
+                        zhi: zhi,
+                        wuXing: zhiWuXing,
+                        liuQin: liuQin
+                    };
+                } else {
+                    bianGuaInfo[i] = null;
+                }
+            }
+            
+            return bianGuaInfo;
+        }
+
+        // 獲取卦身
+        function getGuaShen(benGuaBinary, month, day) {
+            // 卦身的計算方法根據月日和世爻位置
+            const benGuaInfo = getGuaInfo(benGuaBinary);
+            const shiPos = benGuaInfo.shiYing[0];
+            
+            // 簡化的卦身計算（實際計算更複雜）
+            const guaShenZhi = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+            let monthZhi = month.length > 1 ? month[1] : '寅';
+            let dayZhi = day.length > 1 ? day[1] : '子';
+            
+            let monthIndex = diZhi.indexOf(monthZhi);
+            let shiIndex = shiPos - 1;
+            let guaShenIndex = (monthIndex + shiIndex) % 12;
+            
+            const zhi = guaShenZhi[guaShenIndex];
+            const zhiWuXing = wuXing[zhi];
+            const guaGong = getGuaGong(benGuaBinary);
+            const guaGongWuXing = getGuaGongWuXing(guaGong);
+            const liuQin = getLiuQin(guaGongWuXing, zhiWuXing);
+            
+            return {
+                zhi: zhi,
+                wuXing: zhiWuXing,
+                liuQin: liuQin
+            };
+        }
+
+        function getLiuShouOrder(day) {
+            // 根據日干起六獸，不是日支
+            if (!day || day.length < 1) return [0, 1, 2, 3, 4, 5];
+            
+            const gan = day[0];
+            const ganIndex = tianGan.indexOf(gan);
+            if (ganIndex === -1) return [0, 1, 2, 3, 4, 5];
+            
+            // 根據日干確定初爻六獸
+            // 甲乙起青龍，丙丁起朱雀，戊日起勾陳，己日起螣蛇，庚辛起白虎，壬癸起玄武
+            const ganShouMap = {
+                '甲': 0, '乙': 0,  // 青龍
+                '丙': 1, '丁': 1,  // 朱雀
+                '戊': 2,           // 勾陳
+                '己': 3,           // 螣蛇
+                '庚': 4, '辛': 4,  // 白虎
+                '壬': 5, '癸': 5   // 玄武
+            };
+            
+            const startShou = ganShouMap[gan] || 0;
+            
+            // 從初爻到上爻的順序
+            const order = [];
+            for (let i = 0; i < 6; i++) {
+                order.push((startShou + i) % 6);
+            }
+            return order;
+        }
+
+        function generateTable() {
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+            const day = document.getElementById('day').value;
+            const hour = document.getElementById('hour').value;
+            
+            // 檢查是否已投擲完成
+            if (coinResults.some(result => result === null)) {
+                alert('請先完成六次投擲！');
+                return;
+            }
+            
+            // 從下到上排列（初爻到上爻）
+            const yaos = coinResults.slice().reverse();
+            
+            // 獲取本卦二進制
+            const benGuaBinary = yaos.map(yao => getYaoProperty(yao)).join('');
+            const benGuaInfo = getGuaInfo(benGuaBinary);
+            
+            // 計算變卦
+            const bianGuaBinary = yaos.map(yao => {
+                if (isDongYao(yao)) {
+                    return getYaoProperty(yao) === '1' ? '0' : '1';
+                }
+                return getYaoProperty(yao);
+            }).join('');
+            const bianGuaInfo = getGuaInfo(bianGuaBinary);
+            
+            // 世應位置
+            const shiYing = benGuaInfo.shiYing;
+            
+            // 計算空亡
+            let kongWangZhi = ['戌', '亥'];
+            if (day.length >= 2) {
+                const dayGan = day[0];
+                const dayZhi = day[1];
+                kongWangZhi = getKongWang(dayGan, dayZhi);
+            }
+            
+            // 獲取卦宮
+            const guaGong = getGuaGong(benGuaBinary);
+            const guaGongWuXing = getGuaGongWuXing(guaGong);
+            
+            // 獲取伏神
+            const fuShenList = getFuShen(benGuaBinary, guaGongWuXing);
+            
+            // 獲取變卦信息
+            const bianGuaInfoList = getBianGuaInfo(benGuaBinary, yaos, guaGongWuXing);
+            
+            // 獲取卦身
+            const guaShen = getGuaShen(benGuaBinary, month, day);
+            
+            let tableHTML = `
+                <div class="section">
+                    <h3>完整六爻卦象表</h3>
+                    <table class="hexagram-table">
+                        <tr>
+                            <th>六獸</th>
+                            <th>伏神</th>
+                            <th>爻位</th>
+                            <th>爻象</th>
+                            <th>地支</th>
+                            <th>五行</th>
+                            <th>六親</th>
+                            <th>世應</th>
+                            <th>動變</th>
+                            <th>變卦六親</th>
+                            <th>空亡</th>
+                        </tr>
+            `;
+            
+            // 從初爻到上爻排列
+            const yaoNames = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
+            const shouOrder = getLiuShouOrder(day);
+            
+            // 需要反轉yaos數組，因為投擲時是從初爻到上爻，但yaos是從上爻到初爻
+            const displayYaos = yaos.slice().reverse();
+            
+            for (let i = 0; i < 6; i++) {
+                const yaoType = displayYaos[i];
+                const isDong = isDongYao(yaoType);
+                const yinYang = getYaoProperty(yaoType) === '1' ? '陽' : '陰';
+                const rowClass = isDong ? 'dong-yao' : '';
+                const symbolClass = yinYang === '陽' ? 'yang' : 'yin';
+                
+                // 獲取地支（現在是從初爻到上爻的順序）
+                const allZhi = getZhuangZhi(benGuaBinary);
+                const zhi = allZhi[i];
+                const zhiWuXing = wuXing[zhi];
+                
+                // 計算六親
+                const liuQin = getLiuQin(guaGongWuXing, zhiWuXing);
+                
+                // 世應（注意索引調整）
+                const shiYingText = shiYing.includes(i+1) ? (shiYing[0] === i+1 ? '世' : '應') : '';
+                
+                // 動變
+                const dongBian = isDong ? '動' : '';
+                
+                // 空亡
+                const isKongWang = kongWangZhi.includes(zhi);
+                const kongWangClass = isKongWang ? 'kong-wang' : '';
+                const kongWangText = isKongWang ? '空' : '';
+                
+                // 六獸
+                const shou = liuShou[shouOrder[i]];
+                
+                // 伏神
+                const fuShen = fuShenList.find(fs => fs.index === i);
+                const fuShenText = fuShen ? `<div class="fu-shen">${fuShen.liuQin} ${fuShen.zhi}${fuShen.wuXing}</div>` : '';
+                
+                // 變卦信息（修正索引對應）
+                const bianInfo = bianGuaInfoList[i];  // 現在索引直接對應
+                const bianText = bianInfo ? `<div class="bian-info">${bianInfo.liuQin} ${bianInfo.zhi}${bianInfo.wuXing}</div>` : '';
+                
+                tableHTML += `
+                    <tr class="${rowClass} ${kongWangClass}">
+                        <td>${shou}</td>
+                        <td>${fuShenText}</td>
+                        <td><strong>${yaoNames[i]}</strong></td>
+                        <td class="yao-line ${symbolClass}">${getYaoSymbol(yaoType)}</td>
+                        <td>${zhi}</td>
+                        <td>${zhiWuXing}</td>
+                        <td>${liuQin}</td>
+                        <td style="color: red; font-weight: bold;">${shiYingText}</td>
+                        <td>${dongBian}</td>
+                        <td>${bianText}</td>
+                        <td>${kongWangText}</td>
+                    </tr>
+                `;
+            }
+            
+            const dongYaoList = [];
+            for (let i = 0; i < 6; i++) {
+                if (isDongYao(displayYaos[i])) {
+                    dongYaoList.push(yaoNames[i]);
+                }
+            }
+            
+            // 卦的特殊類型
+            let guaType = '';
+            if (benGuaInfo.type) {
+                guaType = `<span class="gua-type">${benGuaInfo.type}</span>`;
+            }
+            
+            tableHTML += `
+                    </table>
+                    <div style="margin-top: 15px;">
+                        <p><strong>四柱:</strong> ${year} ${month} ${day} ${hour}</p>
+                        <p><strong>本卦:</strong> ${benGuaInfo.fullName}${guaType} → <strong>變卦:</strong> ${bianGuaInfo.fullName}</p>
+                        <p><strong>卦宮:</strong> ${guaGong}宮 (${guaGongWuXing}) | <strong>世爻:</strong> ${yaoNames[shiYing[0]-1]} | <strong>應爻:</strong> ${yaoNames[shiYing[1]-1]}</p>
+                        <p><strong>動爻:</strong> ${dongYaoList.length > 0 ? dongYaoList.join('、') : '無動爻'}</p>
+                        <p><strong>空亡:</strong> ${kongWangZhi.join('、')}</p>
+                        <p><strong>卦身:</strong> ${guaShen.liuQin} ${guaShen.zhi}${guaShen.wuXing}</p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('hexagram-display').innerHTML = tableHTML;
+        }
+
+        function exportPrompt() {
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+            const day = document.getElementById('day').value;
+            const hour = document.getElementById('hour').value;
+            const question = document.getElementById('question').value;
+            
+            if (coinResults.some(result => result === null)) {
+                alert('請先完成投擲並生成卦表！');
+                return;
+            }
+            
+            const yaos = coinResults.slice().reverse();
+            const benGuaBinary = yaos.map(yao => getYaoProperty(yao)).join('');
+            const benGuaInfo = getGuaInfo(benGuaBinary);
+            
+            const bianGuaBinary = yaos.map(yao => {
+                if (isDongYao(yao)) {
+                    return getYaoProperty(yao) === '1' ? '0' : '1';
+                }
+                return getYaoProperty(yao);
+            }).join('');
+            const bianGuaInfo = getGuaInfo(bianGuaBinary);
+            
+            const shiYing = benGuaInfo.shiYing;
+            const yaoNames = ['上爻', '五爻', '四爻', '三爻', '二爻', '初爻'];
+            
+            let dongYaoList = [];
+            let yaoDetails = '';
+            
+            const guaGong = getGuaGong(benGuaBinary);
+            const guaGongWuXing = getGuaGongWuXing(guaGong);
+            const shouOrder = getLiuShouOrder(day);
+            
+            let kongWangZhi = ['戌', '亥'];
+            if (day.length >= 2) {
+                const dayGan = day[0];
+                const dayZhi = day[1];
+                kongWangZhi = getKongWang(dayGan, dayZhi);
+            }
+            
+            // 獲取伏神和變卦信息
+            const fuShenList = getFuShen(benGuaBinary, guaGongWuXing);
+            const bianGuaInfoList = getBianGuaInfo(benGuaBinary, yaos, guaGongWuXing);
+            const guaShen = getGuaShen(benGuaBinary, month, day);
+            
+            for (let i = 0; i < 6; i++) {
+                const yaoType = yaos[i];
+                const isDong = isDongYao(yaoType);
+                if (isDong) {
+                    dongYaoList.push(yaoNames[i]);
+                }
+                
+                const allZhi = getZhuangZhi(benGuaBinary);
+                const zhi = allZhi[i];
+                const zhiWuXing = wuXing[zhi];
+                const liuQin = getLiuQin(guaGongWuXing, zhiWuXing);
+                const shiYingText = shiYing.includes(6-i) ? (shiYing[0] === 6-i ? '世' : '應') : '';
+                const shou = liuShou[shouOrder[i]];
+                const isKongWang = kongWangZhi.includes(zhi);
+                const status = `${isDong ? '動' : '靜'}${isKongWang ? '空' : ''}`;
+                
+                // 伏神信息
+                const fuShen = fuShenList.find(fs => fs.index === i);
+                const fuShenText = fuShen ? ` 伏${fuShen.liuQin}${fuShen.zhi}${fuShen.wuXing}` : '';
+                
+                // 變卦信息
+                const bianInfo = bianGuaInfoList[i];
+                const bianText = bianInfo ? ` → 變${bianInfo.liuQin}${bianInfo.zhi}${bianInfo.wuXing}` : '';
+                
+                yaoDetails += `${yaoNames[i]}：${getYaoSymbol(yaoType)} ${shou} ${liuQin}${zhi}${zhiWuXing} ${shiYingText} (${status})${fuShenText}${bianText}\n`;
+            }
+            
+            const guaTypeText = benGuaInfo.type ? `（${benGuaInfo.type}）` : '';
+            
+            const prompt = `請幫我分析以下六爻卦象：
+
+【問事內容】
+${question}
+
+【起卦時間】
+四柱：${year} ${month} ${day} ${hour}
+空亡：${kongWangZhi.join('、')}
+卦身：${guaShen.liuQin}${guaShen.zhi}${guaShen.wuXing}
+
+【卦象信息】
+卦宮：${guaGong}宮 (${guaGongWuXing})
+本卦：${benGuaInfo.fullName}${guaTypeText}
+變卦：${bianGuaInfo.fullName}
+世爻：${yaoNames[6-shiYing[0]]}
+應爻：${yaoNames[6-shiYing[1]]}
+
+【完整爻象】
+${yaoDetails}
+動爻：${dongYaoList.length > 0 ? dongYaoList.join('、') : '無動爻'}
+
+【投擲記錄】
+初爻：${coinResults[0]}
+二爻：${coinResults[1]}
+三爻：${coinResults[2]}
+四爻：${coinResults[3]}
+五爻：${coinResults[4]}
+上爻：${coinResults[5]}
+
+請根據六爻理論，從以下角度進行詳細分析：
+1. 卦象基本含義與卦宮分析${guaTypeText ? '（注意此卦為' + benGuaInfo.type + '）' : ''}
+2. 世應關係與用神確定
+3. 動爻分析與變化意義
+4. 六親生克關係（包括伏神與飛神的關係）
+5. 空亡對卦象的影響
+6. 卦身的作用與意義
+7. 結合問事內容的具體判斷
+8. 吉凶預測及行動建議
+9. 時間應期判斷
+
+請提供準確詳細的六爻分析。`;
+
+            document.getElementById('prompt-display').innerHTML = `
+                <div class="section">
+                    <h3>AI分析Prompt（完整版）</h3>
+                    <div class="prompt-output">${prompt}</div>
+                    <button class="copy-btn" onclick="copyPrompt()">複製Prompt</button>
+                </div>
+            `;
+        }
+
+        function copyPrompt() {
+            const promptText = document.querySelector('.prompt-output').textContent;
+            navigator.clipboard.writeText(promptText).then(function() {
+                alert('Prompt已複製到剪貼板！');
+            });
+        }
+    </script>
 </body>
 </html>
