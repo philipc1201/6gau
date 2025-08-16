@@ -286,6 +286,46 @@
             <button class="auto-btn" onclick="autoThrowCoins()">自動投擲六次</button>
         </div>
 
+        <!-- 數字起卦 -->
+        <div class="section">
+          <h3>數字起卦（免搖錢）</h3>
+          <div class="input-group">
+            <!-- 方法一：一個數字 -->
+            <div class="input-item">
+              <label for="num-one">方法一：報一個數字</label>
+              <input id="num-one" type="number" placeholder="例如：3">
+              <button class="coin-btn" onclick="startByOne()">用方法一起卦</button>
+              <div style="font-size:12px;color:#666;margin-top:4px">
+                上卦=此數÷8取餘(零當八)；下卦=時辰數(子=1…亥=12)÷8取餘；動爻=(此數+時辰數)÷6取餘(零當六)
+              </div>
+            </div>
+
+            <!-- 方法二：兩個數字 -->
+            <div class="input-item">
+              <label>方法二：報兩個數字</label>
+              <div style="display:flex;gap:6px">
+                <input id="num-two-a" type="number" placeholder="第一個（上卦）">
+                <input id="num-two-b" type="number" placeholder="第二個（下卦）">
+              </div>
+              <button class="coin-btn" onclick="startByTwo()">用方法二起卦</button>
+              <div style="font-size:12px;color:#666;margin-top:4px">
+                上卦=第一個÷8；下卦=第二個÷8；動爻=(兩數相加)÷6（零當六）
+              </div>
+            </div>
+
+            <!-- 方法三：一組多位數 -->
+            <div class="input-item" style="flex:2">
+              <label for="num-many">方法三：報一組多位數</label>
+              <input id="num-many" type="text" placeholder="例如：789 或 1234">
+              <button class="coin-btn" onclick="startByMany()">用方法三起卦</button>
+              <div style="font-size:12px;color:#666;margin-top:4px">
+                奇位數：分段法（首位 / 其餘）；偶位數：平分法（前半和 / 後半和）。兩段各÷8取餘；動爻=全數逐位相加÷6（零當六）
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         <div class="section">
             <h3>問事內容</h3>
             <textarea id="question" placeholder="請輸入所問何事..."></textarea>
@@ -765,6 +805,102 @@
               .then(() => alert('Prompt已複製到剪貼板！'))
               .catch(() => alert('複製失敗，請檢查瀏覽器權限'));
         }
+
+        // ===== 數字起卦：共用工具 =====
+        const trigramBinaryByIndex = {
+          1:'111', // 乾
+          2:'011', // 兌
+          3:'101', // 離
+          4:'001', // 震
+          5:'110', // 巽
+          6:'010', // 坎
+          7:'100', // 艮
+          8:'000'  // 坤
+        };
+
+        function to8(n){ n = Math.abs(parseInt(n,10)||0); const r = n % 8; return r===0 ? 8 : r; }
+        function to6(n){ n = Math.abs(parseInt(n,10)||0); const r = n % 6; return r===0 ? 6 : r; }
+
+        // 從 hour 下拉取時辰地支序號：子=1…亥=12
+        function getHourBranchIndex(){
+          const hourVal = (document.getElementById('hour')?.value || '');
+          const zhi = hourVal.slice(1,2); // 取地支
+          const idx = diZhi.indexOf(zhi);
+          return idx === -1 ? 1 : (idx + 1);
+        }
+
+        // 由「上卦序(1..8)、下卦序(1..8)、動爻位(1=初..6=上)」生成 coinResults 並更新畫面
+        function setHexFromTrigramsAndMover(upperIdx, lowerIdx, movePos1to6){
+          const upBin  = trigramBinaryByIndex[upperIdx];
+          const lowBin = trigramBinaryByIndex[lowerIdx];
+          const topDownBits = (upBin + lowBin).split(''); // [上,五,四,三,二,初] 的 1/0
+
+          // 把 top-down bits 轉成 bottom-up coinResults（初到上）
+          for(let i=0;i<6;i++){
+            const j = 5 - i; // top→down index
+            const bit = topDownBits[j];              // '1' or '0'
+            const isMoving = (i + 1) === movePos1to6; // 1=初..6=上
+            const type = (bit === '1')
+              ? (isMoving ? '老陽' : '少陽')
+              : (isMoving ? '老陰' : '少陰');
+            coinResults[i] = type;
+
+            // 同步到投擲顯示區（coinX-result）
+            const span = document.getElementById(`coin${i+1}-result`);
+            if (span) span.innerHTML = `<strong>【數起】→ ${type}</strong>`;
+          }
+        }
+
+        // ===== 方法一：一個數字 + 時辰 =====
+        function startByOne(){
+          const v = document.getElementById('num-one').value.trim();
+          if (!v){ alert('請輸入一個數字'); return; }
+          const n = parseInt(v,10);
+          const hourIdx = getHourBranchIndex();   // 1..12
+          const upperIdx = to8(n);                // 1..8
+          const lowerIdx = to8(hourIdx);          // 1..8
+          const movePos  = to6(n + hourIdx);      // 1..6（零當六）
+          setHexFromTrigramsAndMover(upperIdx, lowerIdx, movePos);
+        }
+
+        // ===== 方法二：兩個數字 =====
+        function startByTwo(){
+          const a = parseInt(document.getElementById('num-two-a').value.trim(),10);
+          const b = parseInt(document.getElementById('num-two-b').value.trim(),10);
+          if (isNaN(a) || isNaN(b)){ alert('請輸入兩個數字'); return; }
+          const upperIdx = to8(a);
+          const lowerIdx = to8(b);
+          const movePos  = to6(a + b);
+          setHexFromTrigramsAndMover(upperIdx, lowerIdx, movePos);
+        }
+
+        // ===== 方法三：一組多位數（奇數位=分段法；偶數位=平分法） =====
+        function startByMany(){
+          const sRaw = document.getElementById('num-many').value.trim();
+          const s = (sRaw.match(/\d+/g) || []).join('');
+          if (!s){ alert('請輸入數字（可含空格/符號）'); return; }
+
+          const digits = s.split('').map(d=>parseInt(d,10));
+          const L = digits.length;
+
+          let upBase, downBase; // 用來求上/下卦的「基數」
+          if (L % 2 === 1){
+            // 奇位數：分段法（首位 / 其餘）
+            upBase = parseInt(s[0],10);
+            downBase = parseInt(s.slice(1) || '0',10);
+          }else{
+            // 偶位數：平分法（前半和 / 後半和）
+            const half = L/2;
+            upBase   = digits.slice(0, half).reduce((a,b)=>a+b,0);
+            downBase = digits.slice(half).reduce((a,b)=>a+b,0);
+          }
+
+          const upperIdx = to8(upBase);
+          const lowerIdx = to8(downBase);
+          const movePos  = to6(digits.reduce((a,b)=>a+b,0)); // 逐位相加
+          setHexFromTrigramsAndMover(upperIdx, lowerIdx, movePos);
+        }
+
 
 
 
