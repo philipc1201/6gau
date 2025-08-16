@@ -900,7 +900,6 @@ function exportPrompt() {
         return;
     }
 
-    // 上→初
     const yaosTopDown = coinResults.slice().reverse(); // [上, 五, 四, 三, 二, 初]
     const benGuaBinary = yaosTopDown.map(yao => getYaoProperty(yao)).join('');
     const benGuaInfo = getGuaInfo(benGuaBinary);
@@ -919,18 +918,16 @@ function exportPrompt() {
 
     const shouOrder = getLiuShouOrder(day);           // 初→上
     const allZhi = getZhuangZhi(benGuaBinary);        // 初→上
-    const fuShenList = getFuShen(benGuaBinary, guaGongWuXing); // index 0=初 … 5=上
-    const bianGuaInfoList = getBianGuaInfo(benGuaBinary, yaosTopDown, guaGongWuXing); // 初→上
+    const fuShenList = getFuShen(benGuaBinary, guaGongWuXing);
+    const bianGuaInfoList = getBianGuaInfo(benGuaBinary, yaosTopDown, guaGongWuXing);
+    const guaShen = getGuaShen(benGuaBinary, yaosTopDown);
+    const shiShenPos = getShiShenPos(benGuaBinary);
 
     let kongWangZhi = ['戌', '亥'];
     if (day.length >= 2) {
         const dayGan = day[0], dayZhi = day[1];
         kongWangZhi = getKongWang(dayGan, dayZhi);
     }
-
-    // ★ 安世身 & 月卦身
-    const shiShenPos = getShiShenPos(benGuaBinary);               // 1..6
-    const guaShen = getGuaShen(benGuaBinary, yaosTopDown);         // {pos1to6, zhi, wuXing, liuQin}
 
     let dongYaoList = [];
     let yaoDetails = '';
@@ -951,15 +948,11 @@ function exportPrompt() {
 
         const pos1to6 = displayIndex + 1;  // 1=初 … 6=上
         let mark = '';
-
-        // 世/應
         if (shiYing.includes(pos1to6)) mark = (shiYing[0] === pos1to6 ? '世' : '應');
-        // 世身
         if (pos1to6 === shiShenPos) {
             if (mark === '世') mark = '世身';
             else mark = mark ? (mark + ' 身') : '身';
         }
-        // 卦身
         if (pos1to6 === guaShen.pos1to6 && !mark.includes('身')) {
             mark = mark ? (mark + ' 卦身') : '卦身';
         }
@@ -1025,6 +1018,7 @@ ${yaoDetails}
         </div>
     `;
 }
+
 
 
     </script>
