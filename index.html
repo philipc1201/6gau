@@ -226,10 +226,10 @@
         <div class="coin-input">
           <label>第五次（五爻）:</label>
           <div class="coin-buttons">
-            <button class="coin-btn" onclick="setCoinResult(6, '字字字')">三字(老陰)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '字字背')">兩字一背(少陽)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '字背背')">一字兩背(少陰)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '背背背')">三背(老陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(5, '字字字')">三字(老陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(5, '字字背')">兩字一背(少陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(5, '字背背')">一字兩背(少陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(5, '背背背')">三背(老陽)</button>
           </div>
           <span id="coin5-result"></span>
         </div>
@@ -238,10 +238,10 @@
         <div class="coin-input">
           <label>第四次（四爻）:</label>
           <div class="coin-buttons">
-            <button class="coin-btn" onclick="setCoinResult(6, '字字字')">三字(老陰)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '字字背')">兩字一背(少陽)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '字背背')">一字兩背(少陰)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '背背背')">三背(老陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(4, '字字字')">三字(老陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(4, '字字背')">兩字一背(少陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(4, '字背背')">一字兩背(少陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(4, '背背背')">三背(老陽)</button>
           </div>
           <span id="coin4-result"></span>
         </div>
@@ -250,10 +250,10 @@
         <div class="coin-input">
           <label>第三次（三爻）:</label>
           <div class="coin-buttons">
-            <button class="coin-btn" onclick="setCoinResult(6, '字字字')">三字(老陰)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '字字背')">兩字一背(少陽)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '字背背')">一字兩背(少陰)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '背背背')">三背(老陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(3, '字字字')">三字(老陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(3, '字字背')">兩字一背(少陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(3, '字背背')">一字兩背(少陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(3, '背背背')">三背(老陽)</button>
           </div>
           <span id="coin3-result"></span>
         </div>
@@ -262,10 +262,10 @@
         <div class="coin-input">
           <label>第二次（二爻）:</label>
           <div class="coin-buttons">
-            <button class="coin-btn" onclick="setCoinResult(6, '字字字')">三字(老陰)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '字字背')">兩字一背(少陽)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '字背背')">一字兩背(少陰)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '背背背')">三背(老陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(2, '字字字')">三字(老陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(2, '字字背')">兩字一背(少陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(2, '字背背')">一字兩背(少陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(2, '背背背')">三背(老陽)</button>
           </div>
           <span id="coin2-result"></span>
         </div>
@@ -274,10 +274,10 @@
         <div class="coin-input">
           <label>第一次（初爻）:</label>
           <div class="coin-buttons">
-            <button class="coin-btn" onclick="setCoinResult(6, '字字字')">三字(老陰)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '字字背')">兩字一背(少陽)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '字背背')">一字兩背(少陰)</button>
-            <button class="coin-btn" onclick="setCoinResult(6, '背背背')">三背(老陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(1, '字字字')">三字(老陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(1, '字字背')">兩字一背(少陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(1, '字背背')">一字兩背(少陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(1, '背背背')">三背(老陽)</button>
           </div>
           <span id="coin1-result"></span>
         </div>
@@ -788,38 +788,34 @@ function getShiShenPos(benGuaBinary) {
     return map[shiZhi] || shiPos; // fallback：未知支時用世位
 }
 
-// —— 2) 月卦身（正統：陰世從午、陽世從子；由初數至世，取對應支，落在卦中作卦身）——
-// 傳入：benGuaBinary、yaosTopDown（上→初 = [上,五,四,三,二,初]）
-// 回傳：{ pos1to6, zhi, wuXing, liuQin }
+// —— 月卦身（陰世午、陽世子；由初數至世；多個取由下而上第一個；無則以世代身）——
 function getGuaShen(benGuaBinary, yaosTopDown) {
-    const benGuaInfo = getGuaInfo(benGuaBinary);  // 含 shiYing（1=初 … 6=上）
-    const shiPos = benGuaInfo.shiYing[0];         // 1..6（1=初）
-    const allZhi = getZhuangZhi(benGuaBinary);    // 初→上（idx:0=初 … 5=上）
+  const benGuaInfo = getGuaInfo(benGuaBinary);     // shiYing: [世, 應]（1=初 … 6=上）
+  const shiPos = benGuaInfo.shiYing[0];            // 世位 1..6
+  const allZhi = getZhuangZhi(benGuaBinary);       // 初→上 的納甲地支陣列
 
-    // 世爻陰陽：從 yaosTopDown（上→初）找世那條線
-    const shiIndexTopDown = 6 - shiPos;           // 6→0(上), 1→5(初)
-    const shiYaoType = yaosTopDown[shiIndexTopDown];
-    const shiIsYang = (getYaoProperty(shiYaoType) === '1');
+  // 判世爻陰陽：交拆=陰，重單=陽（用實際世那條線來判）
+  const shiIndexTopDown = 6 - shiPos;              // 轉成上→初索引
+  const shiYaoType = yaosTopDown[shiIndexTopDown];
+  const shiIsYang = (getYaoProperty(shiYaoType) === '1');
 
-    // 陰/陽序列（由「初」到「上」）
-    const seqYang = ['子','丑','寅','卯','辰','巳'];
-    const seqYin  = ['午','未','申','酉','戌','亥'];
-    const countingSeq = shiIsYang ? seqYang : seqYin;
+  // 陽：子丑寅卯辰巳；陰：午未申酉戌亥（由「初」向上數到「世」）
+  const seq = shiIsYang
+    ? ['子','丑','寅','卯','辰','巳']            // 陽世還從子月（子=十一月）生
+    : ['午','未','申','酉','戌','亥'];            // 陰世則從五（午）月起
 
-    // 對應世所在層級（由初數上去）
-    const targetZhi = countingSeq[shiPos - 1];
+  const targetZhi = seq[shiPos - 1];               // 數到世位時應得嘅那個「月支」
 
-    // 在本卦（初→上）中尋找該地支落位（多個取由下而上第一個）
-    let pos1to6 = allZhi.findIndex(z => z === targetZhi) + 1; // 1..6
-    if (pos1to6 === 0) pos1to6 = shiPos; // fallback：找唔到就以世爻為卦身
+  // 在本卦（初→上）中找同名地支的爻位；多個時取由下而上第一個；找唔到就以世代身
+  let pos1to6 = allZhi.findIndex(z => z === targetZhi) + 1; // 1..6
+  if (pos1to6 === 0) pos1to6 = shiPos;
 
-    const zhi = allZhi[pos1to6 - 1];
-    const zhiWuXing = wuXing[zhi];
-    const guaGong = getGuaGong(benGuaBinary);
-    const guaGongWuXing = getGuaGongWuXing(guaGong);
-    const liuQin = getLiuQin(guaGongWuXing, zhiWuXing);
+  const zhi = allZhi[pos1to6 - 1];
+  const zhiWuXing = wuXing[zhi];
+  const guaGongWuXing = getGuaGongWuXing(getGuaGong(benGuaBinary));
+  const liuQin = getLiuQin(guaGongWuXing, zhiWuXing);
 
-    return { pos1to6, zhi, wuXing: zhiWuXing, liuQin };
+  return { pos1to6, zhi, wuXing: zhiWuXing, liuQin };
 }
 
 // —— 3) 表格（上→初；含 世/應、世身、卦身 標註）——
@@ -900,10 +896,10 @@ function generateTable() {
         if (shiYing.includes(pos1to6)) tags.push(shiYing[0] === pos1to6 ? '世' : '應');
         if (pos1to6 === shiShenPos) {
             if (tags[0] === '世') tags[0] = '世身';
-            else tags.push('身');
+            else tags.push('世身');
         }
         if (pos1to6 === guaShen.pos1to6) {
-            if (!tags.includes('世身') && !tags.includes('身')) tags.push('卦身');
+            if (!tags.includes('世身') && !tags.includes('世身')) tags.push('卦身');
         }
 
         const fu = fuShenList.find(fs => fs.index === displayIndex);
