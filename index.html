@@ -764,7 +764,6 @@ function generateTable() {
         return;
     }
 
-    // 上→初（與 exportPrompt 一致）
     const yaosTopDown = coinResults.slice().reverse(); // [上, 五, 四, 三, 二, 初]
     const benGuaBinary = yaosTopDown.map(yao => getYaoProperty(yao)).join('');
     const benGuaInfo = getGuaInfo(benGuaBinary);
@@ -780,18 +779,15 @@ function generateTable() {
     const guaGong = getGuaGong(benGuaBinary);
     const guaGongWuXing = getGuaGongWuXing(guaGong);
 
-    // 初→上 的資料
-    const allZhi = getZhuangZhi(benGuaBinary);
-    const shouOrder = getLiuShouOrder(day);
-    const fuShenList = getFuShen(benGuaBinary, guaGongWuXing);
+    const allZhi = getZhuangZhi(benGuaBinary);                 // 初→上
+    const shouOrder = getLiuShouOrder(day);                    // 初→上
+    const fuShenList = getFuShen(benGuaBinary, guaGongWuXing); // index=初→上
     const bianInfoList = getBianGuaInfo(benGuaBinary, yaosTopDown, guaGongWuXing);
+    const guaShen = getGuaShen(benGuaBinary, yaosTopDown);
+    const shiShenPos = getShiShenPos(benGuaBinary);
 
     let kongWangZhi = ['戌','亥'];
     if (day.length >= 2) kongWangZhi = getKongWang(day[0], day[1]);
-
-    // ★ 安世身 & 月卦身
-    const shiShenPos = getShiShenPos(benGuaBinary);                 // 1..6
-    const guaShen = getGuaShen(benGuaBinary, yaosTopDown);           // {pos1to6, zhi, wuXing, liuQin}
 
     let tableHTML = `
       <div class="section">
@@ -830,15 +826,11 @@ function generateTable() {
 
         const pos1to6 = displayIndex + 1;           // 1=初 … 6=上
         let tags = [];
-
-        // 世/應
         if (shiYing.includes(pos1to6)) tags.push(shiYing[0] === pos1to6 ? '世' : '應');
-        // 世身
         if (pos1to6 === shiShenPos) {
             if (tags[0] === '世') tags[0] = '世身';
             else tags.push('身');
         }
-        // 卦身（月卦身）
         if (pos1to6 === guaShen.pos1to6) {
             if (!tags.includes('世身') && !tags.includes('身')) tags.push('卦身');
         }
@@ -870,8 +862,7 @@ function generateTable() {
         `;
     }
 
-    // 總結區
-    const yaoNames = ['上爻','五爻','四爻','三爻','二爻','初爻'];
+    // ✅ 底下不要再宣告 const yaoNames 了（避免重覆）
     const dongYaoList = [];
     for (let i = 0; i < 6; i++) if (isDongYao(yaosTopDown[i])) dongYaoList.push(yaoNames[i]);
     const guaType = benGuaInfo.type ? `<span class="gua-type">${benGuaInfo.type}</span>` : '';
@@ -884,7 +875,7 @@ function generateTable() {
           <p><strong>卦宮:</strong> ${guaGong}宮 (${guaGongWuXing}) |
              <strong>世爻:</strong> ${yaoNames[shiYing[0]-1]} |
              <strong>應爻:</strong> ${yaoNames[shiYing[1]-1]} |
-             <strong>世身:</strong> ${yaoNames[shiShenPos-1]} |
+             <strong>世身:</strong> ${yaoNames[getShiShenPos(benGuaBinary)-1]} |
              <strong>卦身:</strong> ${yaoNames[guaShen.pos1to6-1]}（${guaShen.liuQin} ${guaShen.zhi}${guaShen.wuXing}）</p>
           <p><strong>動爻:</strong> ${dongYaoList.length ? dongYaoList.join('、') : '無動爻'}</p>
           <p><strong>空亡:</strong> ${kongWangZhi.join('、')}</p>
@@ -894,6 +885,7 @@ function generateTable() {
 
     document.getElementById('hexagram-display').innerHTML = tableHTML;
 }
+
 
 // —— 4) Prompt（上→初；含 世/應、世身、卦身 標註 + 摘要）——
 function exportPrompt() {
