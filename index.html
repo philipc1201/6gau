@@ -182,27 +182,27 @@
     <div class="container">
         <h1>六爻起卦工具（完整版）</h1>
         
-        <div class="section">
-            <h3>四柱信息</h3>
-            <div class="input-group">
+            <div class="section">
+              <h3>四柱信息</h3>
+              <div class="input-group">
                 <div class="input-item">
-                    <label for="year">年柱:</label>
-                    <input type="text" id="year" placeholder="例：甲子">
+                  <label for="year">年柱:</label>
+                  <select id="year"></select>
                 </div>
                 <div class="input-item">
-                    <label for="month">月柱:</label>
-                    <input type="text" id="month" placeholder="例：丙寅">
+                  <label for="month">月柱:</label>
+                  <select id="month"></select>
                 </div>
                 <div class="input-item">
-                    <label for="day">日柱:</label>
-                    <input type="text" id="day" placeholder="例：戊辰">
+                  <label for="day">日柱:</label>
+                  <select id="day"></select>
                 </div>
                 <div class="input-item">
-                    <label for="hour">時柱:</label>
-                    <input type="text" id="hour" placeholder="例：壬戌">
+                  <label for="hour">時柱:</label>
+                  <select id="hour"></select>
                 </div>
+              </div>
             </div>
-        </div>
 
         <div class="section coin-section">
             <h3>投擲三錢起卦（按古法：乾隆通寶）</h3>
@@ -391,6 +391,38 @@
             '子': '水', '丑': '土', '寅': '木', '卯': '木', '辰': '土', '巳': '火',
             '午': '火', '未': '土', '申': '金', '酉': '金', '戌': '土', '亥': '水'
         };
+
+        // ====== 干支下拉：60 甲子生成 & 填充 ======
+        const jiaZi60 = Array.from({length: 60}, (_, i) => tianGan[i % 10] + diZhi[i % 12]);
+
+        // —— 生成「按天干分組」的 options ——
+        // 甲組：子→戌→申→午→辰→寅；乙組：丑→亥→酉→未→巳→卯 ……
+        function buildGroupedGZOptionsHTML() {
+          let html = '';
+          for (let g = 0; g < 10; g++) {            // 10 個天干
+            const gan = tianGan[g];
+            html += `<optgroup label="${gan}">`;
+            for (let k = 0; k < 6; k++) {           // 每組 6 個
+              const zhi = diZhi[(g + 10 * k) % 12]; // 子/戌/申/午/辰/寅 的步進規律
+              html += `<option value="${gan + zhi}">${gan + zhi}</option>`;
+            }
+            html += `</optgroup>`;
+          }
+          return html;
+        }
+        function populateGanZhiSelectsGrouped() {
+          const optionsHTML = buildGroupedGZOptionsHTML();
+          ['year','month','day','hour'].forEach(id => {
+            const sel = document.getElementById(id);
+            if (sel) sel.innerHTML = optionsHTML;
+          });
+        }
+
+
+        // ====== 以現在時間近似計算四柱，並填入下拉 ======
+        document.addEventListener('DOMContentLoaded', () => {
+          populateGanZhiSelectsGrouped();           // ← 用分組版
+        });
 
         // 六親關係
         function getLiuQin(selfWuXing, targetWuXing) {
