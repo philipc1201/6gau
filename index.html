@@ -698,6 +698,37 @@
             return bianGuaInfo;
         }
 
+        // 依日干起六獸序（由初爻向上排序）
+        // 甲乙起青龍，丙丁起朱雀，戊起勾陳，己起螣蛇，庚辛起白虎，壬癸起玄武
+        function getLiuShouOrder(day) {
+            if (!day || !day.length) return [0,1,2,3,4,5];
+            const gan = day[0];
+            const startMap = {
+                '甲':0,'乙':0,   // 青龍
+                '丙':1,'丁':1,   // 朱雀
+                '戊':2,          // 勾陳
+                '己':3,          // 螣蛇
+                '庚':4,'辛':4,   // 白虎
+                '壬':5,'癸':5    // 玄武
+            };
+            const start = startMap[gan];
+            if (start === undefined) return [0,1,2,3,4,5];
+            const order = [];
+            for (let i = 0; i < 6; i++) order.push((start + i) % 6);
+            return order; // 回傳一個 index 陣列：對應 liuShou 的索引，初→上
+        }
+
+        function copyPrompt() {
+            const el = document.querySelector('.prompt-output');
+            const text = el ? el.textContent : '';
+            if (!text) { alert('找不到可複製的內容'); return; }
+            navigator.clipboard.writeText(text)
+              .then(() => alert('Prompt已複製到剪貼板！'))
+              .catch(() => alert('複製失敗，請檢查瀏覽器權限'));
+        }
+
+
+
 // —— 1) 安世身（按世所臨地支）——
 // 規則：子午→初(1)、丑未→二(2)、寅申→三(3)、卯酉→四(4)、辰戌→五(5)、巳亥→上(6)
 // 回傳 1..6（1=初 … 6=上）
@@ -794,9 +825,9 @@ function generateTable() {
         <h3>完整六爻卦象表</h3>
         <table class="hexagram-table">
           <tr>
-            <th>六獸</th>
-            <th>伏神</th>
             <th>爻位</th>
+            <th>伏神</th>
+            <th>六獸</th>
             <th>爻象</th>
             <th>地支</th>
             <th>五行</th>
@@ -807,6 +838,7 @@ function generateTable() {
             <th>空亡</th>
           </tr>
     `;
+
 
     for (let i = 0; i < 6; i++) {
         const displayIndex = 5 - i;                 // 映射到 初→上
@@ -847,9 +879,9 @@ function generateTable() {
 
         tableHTML += `
           <tr class="${rowClass} ${kongClass}">
-            <td>${shou}</td>
-            <td>${fuText}</td>
             <td><strong>${yaoNames[i]}</strong></td>
+            <td>${fuText}</td>
+            <td>${shou}</td>
             <td class="yao-line ${symbolClass}">${getYaoSymbol(yaoType)}</td>
             <td>${zhi}</td>
             <td>${zhiWuXing}</td>
@@ -860,6 +892,7 @@ function generateTable() {
             <td>${kongText}</td>
           </tr>
         `;
+
     }
 
     // ✅ 底下不要再宣告 const yaoNames 了（避免重覆）
