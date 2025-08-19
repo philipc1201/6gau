@@ -5,72 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>六爻起卦工具（完整版）</title>
     <style>
-        /* 密碼輸入層樣式 */
-        #password-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-        
-        .password-box {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            max-width: 400px;
-        }
-        
-        .password-box h2 {
-            color: #8B4513;
-            margin-bottom: 20px;
-        }
-        
-        .password-box input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        
-        .password-box button {
-            background-color: #8B4513;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        
-        .password-box button:hover {
-            background-color: #A0522D;
-        }
-        
-        .error-message {
-            color: red;
-            margin-top: 10px;
-            display: none;
-        }
-        
-        /* 主內容初始隱藏 */
-        #main-content {
-            display: none;
-        }
-        
-        /* 原有樣式 */
         body {
             font-family: 'Microsoft JhengHei', '微軟正黑體', sans-serif;
             max-width: 1200px;
@@ -245,21 +179,9 @@
     </style>
 </head>
 <body>
-    <!-- 密碼輸入層 -->
-    <div id="password-overlay">
-        <div class="password-box">
-            <h2>請輸入密碼</h2>
-            <input type="password" id="password-input" placeholder="請輸入密碼" onkeypress="checkEnter(event)">
-            <button onclick="checkPassword()">確認</button>
-            <div class="error-message" id="error-message">密碼錯誤，請重試！</div>
-        </div>
-    </div>
-
-    <!-- 主內容 -->
-    <div id="main-content">
-        <div class="container">
-            <h1>六爻起卦工具（完整版）</h1>
-            
+    <div class="container">
+        <h1>六爻起卦工具（完整版）</h1>
+        
             <div class="section">
               <h3>四柱信息</h3>
               <div class="input-group">
@@ -282,172 +204,143 @@
               </div>
             </div>
 
-            <div class="section coin-section">
-                <h3>投擲三錢起卦（按古法：乾隆通寶）</h3>
-                <p style="font-size: 12px; color: #666;">
-                    字面為正（陽），背面為陰。兩字一背為少陽（—），兩背一字為少陰（- -），三背為老陽變爻（—O），三字為老陰變爻（- -X）
-                </p>
-                
-            <!-- 第六次（上爻） -->
-            <div class="coin-input">
-              <label>第六次（上爻）:</label>
-              <div class="coin-buttons">
-                <button class="coin-btn" onclick="setCoinResult(6, '字字字')">三字(老陰)</button>
-                <button class="coin-btn" onclick="setCoinResult(6, '字字背')">兩字一背(少陽)</button>
-                <button class="coin-btn" onclick="setCoinResult(6, '字背背')">一字兩背(少陰)</button>
-                <button class="coin-btn" onclick="setCoinResult(6, '背背背')">三背(老陽)</button>
-              </div>
-              <span id="coin6-result"></span>
-            </div>
-
-            <!-- 第五次（五爻） -->
-            <div class="coin-input">
-              <label>第五次（五爻）:</label>
-              <div class="coin-buttons">
-                <button class="coin-btn" onclick="setCoinResult(5, '字字字')">三字(老陰)</button>
-                <button class="coin-btn" onclick="setCoinResult(5, '字字背')">兩字一背(少陽)</button>
-                <button class="coin-btn" onclick="setCoinResult(5, '字背背')">一字兩背(少陰)</button>
-                <button class="coin-btn" onclick="setCoinResult(5, '背背背')">三背(老陽)</button>
-              </div>
-              <span id="coin5-result"></span>
-            </div>
-
-            <!-- 第四次（四爻） -->
-            <div class="coin-input">
-              <label>第四次（四爻）:</label>
-              <div class="coin-buttons">
-                <button class="coin-btn" onclick="setCoinResult(4, '字字字')">三字(老陰)</button>
-                <button class="coin-btn" onclick="setCoinResult(4, '字字背')">兩字一背(少陽)</button>
-                <button class="coin-btn" onclick="setCoinResult(4, '字背背')">一字兩背(少陰)</button>
-                <button class="coin-btn" onclick="setCoinResult(4, '背背背')">三背(老陽)</button>
-              </div>
-              <span id="coin4-result"></span>
-            </div>
-
-            <!-- 第三次（三爻） -->
-            <div class="coin-input">
-              <label>第三次（三爻）:</label>
-              <div class="coin-buttons">
-                <button class="coin-btn" onclick="setCoinResult(3, '字字字')">三字(老陰)</button>
-                <button class="coin-btn" onclick="setCoinResult(3, '字字背')">兩字一背(少陽)</button>
-                <button class="coin-btn" onclick="setCoinResult(3, '字背背')">一字兩背(少陰)</button>
-                <button class="coin-btn" onclick="setCoinResult(3, '背背背')">三背(老陽)</button>
-              </div>
-              <span id="coin3-result"></span>
-            </div>
-
-            <!-- 第二次（二爻） -->
-            <div class="coin-input">
-              <label>第二次（二爻）:</label>
-              <div class="coin-buttons">
-                <button class="coin-btn" onclick="setCoinResult(2, '字字字')">三字(老陰)</button>
-                <button class="coin-btn" onclick="setCoinResult(2, '字字背')">兩字一背(少陽)</button>
-                <button class="coin-btn" onclick="setCoinResult(2, '字背背')">一字兩背(少陰)</button>
-                <button class="coin-btn" onclick="setCoinResult(2, '背背背')">三背(老陽)</button>
-              </div>
-              <span id="coin2-result"></span>
-            </div>
-
-            <!-- 第一次（初爻） -->
-            <div class="coin-input">
-              <label>第一次（初爻）:</label>
-              <div class="coin-buttons">
-                <button class="coin-btn" onclick="setCoinResult(1, '字字字')">三字(老陰)</button>
-                <button class="coin-btn" onclick="setCoinResult(1, '字字背')">兩字一背(少陽)</button>
-                <button class="coin-btn" onclick="setCoinResult(1, '字背背')">一字兩背(少陰)</button>
-                <button class="coin-btn" onclick="setCoinResult(1, '背背背')">三背(老陽)</button>
-              </div>
-              <span id="coin1-result"></span>
-            </div>
-
-                
-                <button class="auto-btn" onclick="autoThrowCoins()">自動投擲六次</button>
-            </div>
-
-            <!-- 數字起卦 -->
-            <div class="section">
-              <h3>數字起卦（請先輸入時間）</h3>
-              <div class="input-group">
-                <!-- 方法一：一個數字 -->
-                <div class="input-item">
-                  <label for="num-one">方法一：報一個數字</label>
-                  <input id="num-one" type="number" placeholder="例如：3">
-                  <button class="coin-btn" onclick="startByOne()">用方法一起卦</button>
-                  <div style="font-size:12px;color:#666;margin-top:4px">
-                    上卦=此數÷8取餘(零當八)；下卦=時辰數(子=1…亥=12)÷8取餘；動爻=(此數+時辰數)÷6取餘(零當六)
-                  </div>
-                </div>
-
-                <!-- 方法二：兩個數字 -->
-                <div class="input-item">
-                  <label>方法二：報兩個數字</label>
-                  <div style="display:flex;gap:6px">
-                    <input id="num-two-a" type="number" placeholder="第一個（上卦）">
-                    <input id="num-two-b" type="number" placeholder="第二個（下卦）">
-                  </div>
-                  <button class="coin-btn" onclick="startByTwo()">用方法二起卦</button>
-                  <div style="font-size:12px;color:#666;margin-top:4px">
-                    上卦=第一個÷8；下卦=第二個÷8；動爻=(兩數相加)÷6（零當六）
-                  </div>
-                </div>
-
-                <!-- 方法三：一組多位數 -->
-                <div class="input-item" style="flex:2">
-                  <label for="num-many">方法三：報一組多位數</label>
-                  <input id="num-many" type="text" placeholder="例如：789 或 1234">
-                  <button class="coin-btn" onclick="startByMany()">用方法三起卦</button>
-                  <div style="font-size:12px;color:#666;margin-top:4px">
-                    奇位數：分段法（首位 / 其餘）；偶位數：平分法（前半和 / 後半和）。兩段各÷8取餘；動爻=全數逐位相加÷6（零當六）
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="section">
-                <h3>問事內容</h3>
-                <textarea id="question" placeholder="請輸入所問何事..."></textarea>
-            </div>
-
-            <div class="buttons">
-                <button onclick="generateTable()">生成完整六爻表</button>
-                <button onclick="exportPrompt()">導出AI分析Prompt</button>
-            </div>
-
-            <div id="hexagram-display"></div>
-            <div id="prompt-display"></div>
+        <div class="section coin-section">
+            <h3>投擲三錢起卦（按古法：乾隆通寶）</h3>
+            <p style="font-size: 12px; color: #666;">
+                字面為正（陽），背面為陰。兩字一背為少陽（—），兩背一字為少陰（- -），三背為老陽變爻（—O），三字為老陰變爻（- -X）
+            </p>
+            
+        <!-- 第六次（上爻） -->
+        <div class="coin-input">
+          <label>第六次（上爻）:</label>
+          <div class="coin-buttons">
+            <button class="coin-btn" onclick="setCoinResult(6, '字字字')">三字(老陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(6, '字字背')">兩字一背(少陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(6, '字背背')">一字兩背(少陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(6, '背背背')">三背(老陽)</button>
+          </div>
+          <span id="coin6-result"></span>
         </div>
+
+        <!-- 第五次（五爻） -->
+        <div class="coin-input">
+          <label>第五次（五爻）:</label>
+          <div class="coin-buttons">
+            <button class="coin-btn" onclick="setCoinResult(5, '字字字')">三字(老陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(5, '字字背')">兩字一背(少陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(5, '字背背')">一字兩背(少陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(5, '背背背')">三背(老陽)</button>
+          </div>
+          <span id="coin5-result"></span>
+        </div>
+
+        <!-- 第四次（四爻） -->
+        <div class="coin-input">
+          <label>第四次（四爻）:</label>
+          <div class="coin-buttons">
+            <button class="coin-btn" onclick="setCoinResult(4, '字字字')">三字(老陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(4, '字字背')">兩字一背(少陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(4, '字背背')">一字兩背(少陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(4, '背背背')">三背(老陽)</button>
+          </div>
+          <span id="coin4-result"></span>
+        </div>
+
+        <!-- 第三次（三爻） -->
+        <div class="coin-input">
+          <label>第三次（三爻）:</label>
+          <div class="coin-buttons">
+            <button class="coin-btn" onclick="setCoinResult(3, '字字字')">三字(老陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(3, '字字背')">兩字一背(少陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(3, '字背背')">一字兩背(少陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(3, '背背背')">三背(老陽)</button>
+          </div>
+          <span id="coin3-result"></span>
+        </div>
+
+        <!-- 第二次（二爻） -->
+        <div class="coin-input">
+          <label>第二次（二爻）:</label>
+          <div class="coin-buttons">
+            <button class="coin-btn" onclick="setCoinResult(2, '字字字')">三字(老陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(2, '字字背')">兩字一背(少陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(2, '字背背')">一字兩背(少陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(2, '背背背')">三背(老陽)</button>
+          </div>
+          <span id="coin2-result"></span>
+        </div>
+
+        <!-- 第一次（初爻） -->
+        <div class="coin-input">
+          <label>第一次（初爻）:</label>
+          <div class="coin-buttons">
+            <button class="coin-btn" onclick="setCoinResult(1, '字字字')">三字(老陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(1, '字字背')">兩字一背(少陽)</button>
+            <button class="coin-btn" onclick="setCoinResult(1, '字背背')">一字兩背(少陰)</button>
+            <button class="coin-btn" onclick="setCoinResult(1, '背背背')">三背(老陽)</button>
+          </div>
+          <span id="coin1-result"></span>
+        </div>
+
+            
+            <button class="auto-btn" onclick="autoThrowCoins()">自動投擲六次</button>
+        </div>
+
+        <!-- 數字起卦 -->
+        <div class="section">
+          <h3>數字起卦（請先輸入時間）</h3>
+          <div class="input-group">
+            <!-- 方法一：一個數字 -->
+            <div class="input-item">
+              <label for="num-one">方法一：報一個數字</label>
+              <input id="num-one" type="number" placeholder="例如：3">
+              <button class="coin-btn" onclick="startByOne()">用方法一起卦</button>
+              <div style="font-size:12px;color:#666;margin-top:4px">
+                上卦=此數÷8取餘(零當八)；下卦=時辰數(子=1…亥=12)÷8取餘；動爻=(此數+時辰數)÷6取餘(零當六)
+              </div>
+            </div>
+
+            <!-- 方法二：兩個數字 -->
+            <div class="input-item">
+              <label>方法二：報兩個數字</label>
+              <div style="display:flex;gap:6px">
+                <input id="num-two-a" type="number" placeholder="第一個（上卦）">
+                <input id="num-two-b" type="number" placeholder="第二個（下卦）">
+              </div>
+              <button class="coin-btn" onclick="startByTwo()">用方法二起卦</button>
+              <div style="font-size:12px;color:#666;margin-top:4px">
+                上卦=第一個÷8；下卦=第二個÷8；動爻=(兩數相加)÷6（零當六）
+              </div>
+            </div>
+
+            <!-- 方法三：一組多位數 -->
+            <div class="input-item" style="flex:2">
+              <label for="num-many">方法三：報一組多位數</label>
+              <input id="num-many" type="text" placeholder="例如：789 或 1234">
+              <button class="coin-btn" onclick="startByMany()">用方法三起卦</button>
+              <div style="font-size:12px;color:#666;margin-top:4px">
+                奇位數：分段法（首位 / 其餘）；偶位數：平分法（前半和 / 後半和）。兩段各÷8取餘；動爻=全數逐位相加÷6（零當六）
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="section">
+            <h3>問事內容</h3>
+            <textarea id="question" placeholder="請輸入所問何事..."></textarea>
+        </div>
+
+        <div class="buttons">
+            <button onclick="generateTable()">生成完整六爻表</button>
+            <button onclick="exportPrompt()">導出AI分析Prompt</button>
+        </div>
+
+        <div id="hexagram-display"></div>
+        <div id="prompt-display"></div>
     </div>
 
     <script>
-        // 密碼驗證函數
-        const CORRECT_PASSWORD = '1201';
-        
-        function checkPassword() {
-            const input = document.getElementById('password-input').value;
-            if (input === CORRECT_PASSWORD) {
-                // 密碼正確，顯示主內容
-                document.getElementById('password-overlay').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                // 初始化下拉選單
-                populateGanZhiSelectsGrouped();
-            } else {
-                // 密碼錯誤，顯示錯誤訊息
-                document.getElementById('error-message').style.display = 'block';
-                document.getElementById('password-input').value = '';
-            }
-        }
-        
-        function checkEnter(event) {
-            if (event.key === 'Enter') {
-                checkPassword();
-            }
-        }
-        
-        // 頁面載入時聚焦到密碼輸入框
-        window.onload = function() {
-            document.getElementById('password-input').focus();
-        };
-
         // 卦象數據（更新世應位置）
         const guaData = {
             // 乾宮
@@ -571,6 +464,12 @@
             if (sel) sel.innerHTML = optionsHTML;
           });
         }
+
+
+        // ====== 以現在時間近似計算四柱，並填入下拉 ======
+        document.addEventListener('DOMContentLoaded', () => {
+          populateGanZhiSelectsGrouped();           // ← 用分組版
+        });
 
         // 六親關係
         function getLiuQin(selfWuXing, targetWuXing) {
@@ -1305,6 +1204,11 @@ ${yaoDetails}
       </div>
   `;
 }
+
+
+
+
+
     </script>
 </body>
 </html>
