@@ -280,6 +280,10 @@
                   <select id="hour"></select>
                 </div>
               </div>
+              <div style="text-align:left;">
+                <button type="button" class="auto-btn" style="margin-left:0;" onclick="fillCurrentBaZi()">用現在時間自動起四柱</button>
+                <span id="bazi-now-info" style="font-size:12px;color:#666;margin-left:10px;"></span>
+              </div>
             </div>
 
             <div class="section coin-section">
@@ -418,6 +422,8 @@
         </div>
     </div>
 
+    <!-- 農曆/八字 library（用於自動起四柱） -->
+    <script src="lunar.js"></script>
     <script>
         // 密碼驗證函數
         const CORRECT_PASSWORD = '1201';
@@ -570,6 +576,40 @@
             const sel = document.getElementById(id);
             if (sel) sel.innerHTML = optionsHTML;
           });
+        }
+
+        // —— 用現在時間自動起四柱（依賴 lunar.js）——
+        function fillCurrentBaZi() {
+          if (typeof Solar === 'undefined') {
+            alert('lunar.js 未載入，請確認 lunar.js 與本檔案放在同一資料夾。');
+            return;
+          }
+          const now = new Date();
+          const lunar = Solar.fromDate(now).getLunar();
+          const bz = lunar.getEightChar();
+          bz.setSect(1); // 子時 23:00 換日（晚子時算次日的日柱）；如想 00:00 才換日，改用 setSect(2) 或刪去此行
+          const sz = {
+            year:  bz.getYear(),   // 年柱（立春分界）
+            month: bz.getMonth(),  // 月柱（節氣分界）
+            day:   bz.getDay(),    // 日柱
+            hour:  bz.getTime()    // 時柱
+          };
+          // 下拉選單已含全部 60 甲子，value 即為「干支」兩字，直接設定即可
+          let allMatched = true;
+          ['year','month','day','hour'].forEach(id => {
+            const sel = document.getElementById(id);
+            if (sel) {
+              sel.value = sz[id];
+              if (sel.value !== sz[id]) allMatched = false;
+            }
+          });
+          const info = document.getElementById('bazi-now-info');
+          if (info) {
+            const t = now.toLocaleString('zh-HK', { hour12: false });
+            info.textContent = allMatched
+              ? `已套用：${t}　${sz.year} ${sz.month} ${sz.day} ${sz.hour}`
+              : '部分干支未能對應下拉選項，請檢查。';
+          }
         }
 
         // 六親關係
