@@ -451,84 +451,84 @@
         // 卦象數據（更新世應位置）
         const guaData = {
             // 乾宮
-            '111111': {name: '乾', fullName: '乾為天', shiYing: [6,3], type: ''},
+            '111111': {name: '乾', fullName: '乾為天', shiYing: [6,3], type: '六沖'},
             '111110': {name: '姤', fullName: '天風姤', shiYing: [1,4], type: ''},
             '111100': {name: '遯', fullName: '天山遯', shiYing: [2,5], type: ''},
-            '111000': {name: '否', fullName: '天地否', shiYing: [3,6], type: '六沖'},
+            '111000': {name: '否', fullName: '天地否', shiYing: [3,6], type: '六合'},
             '110000': {name: '觀', fullName: '風地觀', shiYing: [4,1], type: ''},
             '100000': {name: '剝', fullName: '山地剝', shiYing: [5,2], type: ''},
             '101000': {name: '晉', fullName: '火地晉', shiYing: [4,1], type: '游魂'},
             '101111': {name: '大有', fullName: '火天大有', shiYing: [3,6], type: '歸魂'},
             
             // 震宮
-            '001001': {name: '震', fullName: '震為雷', shiYing: [6,3], type: ''},
-            '001000': {name: '豫', fullName: '雷地豫', shiYing: [1,4], type: ''},
+            '001001': {name: '震', fullName: '震為雷', shiYing: [6,3], type: '六沖'},
+            '001000': {name: '豫', fullName: '雷地豫', shiYing: [1,4], type: '六合'},
             '001010': {name: '解', fullName: '雷水解', shiYing: [2,5], type: ''},
-            '001110': {name: '恆', fullName: '雷風恆', shiYing: [3,6], type: '六合'},
+            '001110': {name: '恆', fullName: '雷風恆', shiYing: [3,6], type: ''},
             '000110': {name: '升', fullName: '地風升', shiYing: [4,1], type: ''},
             '010110': {name: '井', fullName: '水風井', shiYing: [5,2], type: ''},
             '011110': {name: '大過', fullName: '澤風大過', shiYing: [4,1], type: '游魂'},
-            '011001': {name: '隨', fullName: '澤雷隨', shiYing: [3,6], type: '歸魂六沖'},
+            '011001': {name: '隨', fullName: '澤雷隨', shiYing: [3,6], type: '歸魂'},
             
             // 坎宮
-            '010010': {name: '坎', fullName: '坎為水', shiYing: [6,3], type: ''},
-            '010011': {name: '節', fullName: '水澤節', shiYing: [1,4], type: ''},
+            '010010': {name: '坎', fullName: '坎為水', shiYing: [6,3], type: '六沖'},
+            '010011': {name: '節', fullName: '水澤節', shiYing: [1,4], type: '六合'},
             '010001': {name: '屯', fullName: '水雷屯', shiYing: [2,5], type: ''},
-            '010101': {name: '既濟', fullName: '水火既濟', shiYing: [3,6], type: '六合'},
+            '010101': {name: '既濟', fullName: '水火既濟', shiYing: [3,6], type: ''},
             '011101': {name: '革', fullName: '澤火革', shiYing: [4,1], type: ''},
             '001101': {name: '豐', fullName: '雷火豐', shiYing: [5,2], type: ''},
             '000101': {name: '明夷', fullName: '地火明夷', shiYing: [4,1], type: '游魂'},
             '000010': {name: '師', fullName: '地水師', shiYing: [3,6], type: '歸魂'},
             
             // 艮宮
-            '100100': {name: '艮', fullName: '艮為山', shiYing: [6,3], type: ''},
-            '100101': {name: '賁', fullName: '山火賁', shiYing: [1,4], type: ''},
+            '100100': {name: '艮', fullName: '艮為山', shiYing: [6,3], type: '六沖'},
+            '100101': {name: '賁', fullName: '山火賁', shiYing: [1,4], type: '六合'},
             '100111': {name: '大畜', fullName: '山天大畜', shiYing: [2,5], type: ''},
-            '100011': {name: '損', fullName: '山澤損', shiYing: [3,6], type: '六合'},
+            '100011': {name: '損', fullName: '山澤損', shiYing: [3,6], type: ''},
             '101011': {name: '睽', fullName: '火澤睽', shiYing: [4,1], type: ''},
             '111011': {name: '履', fullName: '天澤履', shiYing: [5,2], type: ''},
             '110011': {name: '中孚', fullName: '風澤中孚', shiYing: [4,1], type: '游魂'},
-            '110100': {name: '漸', fullName: '風山漸', shiYing: [3,6], type: '歸魂六合'},
+            '110100': {name: '漸', fullName: '風山漸', shiYing: [3,6], type: '歸魂'},
             
             // 坤宮
-            '000000': {name: '坤', fullName: '坤為地', shiYing: [6,3], type: ''},
-            '000001': {name: '復', fullName: '地雷復', shiYing: [1,4], type: ''},
+            '000000': {name: '坤', fullName: '坤為地', shiYing: [6,3], type: '六沖'},
+            '000001': {name: '復', fullName: '地雷復', shiYing: [1,4], type: '六合'},
             '000011': {name: '臨', fullName: '地澤臨', shiYing: [2,5], type: ''},
-            '000111': {name: '泰', fullName: '地天泰', shiYing: [3,6], type: '六沖'},
-            '001111': {name: '大壯', fullName: '雷天大壯', shiYing: [4,1], type: ''},
+            '000111': {name: '泰', fullName: '地天泰', shiYing: [3,6], type: '六合'},
+            '001111': {name: '大壯', fullName: '雷天大壯', shiYing: [4,1], type: '六沖'},
             '011111': {name: '夬', fullName: '澤天夬', shiYing: [5,2], type: ''},
             '010111': {name: '需', fullName: '水天需', shiYing: [4,1], type: '游魂'},
             '010000': {name: '比', fullName: '水地比', shiYing: [3,6], type: '歸魂'},
             
             // 巽宮
-            '110110': {name: '巽', fullName: '巽為風', shiYing: [6,3], type: ''},
+            '110110': {name: '巽', fullName: '巽為風', shiYing: [6,3], type: '六沖'},
             '110111': {name: '小畜', fullName: '風天小畜', shiYing: [1,4], type: ''},
             '110101': {name: '家人', fullName: '風火家人', shiYing: [2,5], type: ''},
-            '110001': {name: '益', fullName: '風雷益', shiYing: [3,6], type: '六合'},
-            '111001': {name: '無妄', fullName: '天雷無妄', shiYing: [4,1], type: ''},
+            '110001': {name: '益', fullName: '風雷益', shiYing: [3,6], type: ''},
+            '111001': {name: '無妄', fullName: '天雷無妄', shiYing: [4,1], type: '六沖'},
             '101001': {name: '噬嗑', fullName: '火雷噬嗑', shiYing: [5,2], type: ''},
             '100001': {name: '頤', fullName: '山雷頤', shiYing: [4,1], type: '游魂'},
-            '100110': {name: '蠱', fullName: '山風蠱', shiYing: [3,6], type: '歸魂六沖'},
+            '100110': {name: '蠱', fullName: '山風蠱', shiYing: [3,6], type: '歸魂'},
             
             // 離宮
-            '101101': {name: '離', fullName: '離為火', shiYing: [6,3], type: ''},
-            '101100': {name: '旅', fullName: '火山旅', shiYing: [1,4], type: ''},
+            '101101': {name: '離', fullName: '離為火', shiYing: [6,3], type: '六沖'},
+            '101100': {name: '旅', fullName: '火山旅', shiYing: [1,4], type: '六合'},
             '101110': {name: '鼎', fullName: '火風鼎', shiYing: [2,5], type: ''},
-            '101010': {name: '未濟', fullName: '火水未濟', shiYing: [3,6], type: '六合'},
+            '101010': {name: '未濟', fullName: '火水未濟', shiYing: [3,6], type: ''},
             '100010': {name: '蒙', fullName: '山水蒙', shiYing: [4,1], type: ''},
             '110010': {name: '渙', fullName: '風水渙', shiYing: [5,2], type: ''},
-            '111010': {name: '訟', fullName: '天水訟', shiYing: [4,1], type: '游魂六沖'},
+            '111010': {name: '訟', fullName: '天水訟', shiYing: [4,1], type: '游魂'},
             '111101': {name: '同人', fullName: '天火同人', shiYing: [3,6], type: '歸魂'},
             
             // 兌宮
-            '011011': {name: '兌', fullName: '兌為澤', shiYing: [6,3], type: ''},
-            '011010': {name: '困', fullName: '澤水困', shiYing: [1,4], type: ''},
+            '011011': {name: '兌', fullName: '兌為澤', shiYing: [6,3], type: '六沖'},
+            '011010': {name: '困', fullName: '澤水困', shiYing: [1,4], type: '六合'},
             '011000': {name: '萃', fullName: '澤地萃', shiYing: [2,5], type: ''},
-            '011100': {name: '咸', fullName: '澤山咸', shiYing: [3,6], type: '六合'},
+            '011100': {name: '咸', fullName: '澤山咸', shiYing: [3,6], type: ''},
             '010100': {name: '蹇', fullName: '水山蹇', shiYing: [4,1], type: ''},
             '000100': {name: '謙', fullName: '地山謙', shiYing: [5,2], type: ''},
             '001100': {name: '小過', fullName: '雷山小過', shiYing: [4,1], type: '游魂'},
-            '001011': {name: '歸妹', fullName: '雷澤歸妹', shiYing: [3,6], type: '歸魂六合'}
+            '001011': {name: '歸妹', fullName: '雷澤歸妹', shiYing: [3,6], type: '歸魂'}
         };
 
         // 六獸
